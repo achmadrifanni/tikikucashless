@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tikiku Cashless Payment</title>
+  </head>
+  <body>
+    <h1>TIKIKU CASHLESS PAYMENT REPORT</h1>
+    <form>
+      <input type="text" id="receiptInput" placeholder="resi" />
+      <input type="number" id="shippingInput" placeholder="ongkir" />
+
+      <button type="button" id="addBtn">Tambah</button>
+    </form>
+
+    <table>
+      <thead>
+        <tr>
+          <th>No</th>
+          <th>Nomor Resi</th>
+          <th>Ongkir</th>
+          <th>Aksi</th>
+        </tr>
+      </thead>
+
+      <tbody id="shipmentTableBody"></tbody>
+    </table>
+
+    <div>Total: <span id="total"></span></div>
+
+    <input type="file" id="pdfInput" accept=".pdf" />
+
+    <button id="mergeButton">CREATE & MERGE PDF</button>
+
+    <script src="js/app.js"></script>
+  </body>
+</html>
