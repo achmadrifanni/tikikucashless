@@ -4,73 +4,104 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Tikiku Cashless Payment</title>
+    <link rel="stylesheet" href="css/reset.css" />
+    <link rel="stylesheet" href="css/style.css" />
   </head>
   <body>
     <div class="container">
+      <h1>TIKIKU</h1>
+      <p>Cashless Payment Report</p>
 
-    
-    <h1>TIKIKU</h1>
-    <p>Cashless Payment Report</p>
-
-    <div class="card">
-      <header class="card__title">
-        Tambah Transaksi
-      </header>
-      <div class="form__row">
+      <div class="card">
+        <header class="card__title">Tambah Transaksi</header>
         <form>
-          <div class="form__group">
-            <label for="receiptInput">Nomor Resi</label>
-              <input type="text" minlength="12" pattern="\d*" 
-            inputmode="numeric" id="receiptInput" placeholder="resi" />
+          <div class="form__row">
+            <div class="form__group">
+              <label for="receiptInput">Nomor Resi</label>
+
+              <div class="input__group">
+                <span
+                  ><svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    class="lucide lucide-scan-barcode-icon lucide-scan-barcode"
+                  >
+                    <path d="M3 7V5a2 2 0 0 1 2-2h2" />
+                    <path d="M17 3h2a2 2 0 0 1 2 2v2" />
+                    <path d="M21 17v2a2 2 0 0 1-2 2h-2" />
+                    <path d="M7 21H5a2 2 0 0 1-2-2v-2" />
+                    <path d="M8 7v10" />
+                    <path d="M12 7v10" />
+                    <path d="M17 7v10" /></svg
+                ></span>
+                <input
+                  type="text"
+                  minlength="12"
+                  pattern="\d*"
+                  inputmode="numeric"
+                  id="receiptInput"
+                  placeholder="Masukkan Nomor Resi"
+                />
+              </div>
+            </div>
+            <div class="form__group">
+              <label for="shippingInput">Ongkir</label>
+              <div class="input__group">
+                <span>Rp</span>
+                <input
+                  type="number"
+                  id="shippingInput"
+                  placeholder="Contoh: 32000"
+                />
+              </div>
+            </div>
+
+            <button type="button" id="addBtn" class="btn btn--primary">
+              + Tambah
+            </button>
           </div>
-          <div class="form__group">
-            <label for="shippingInput">Ongkir</label>
-            <input type="number" id="shippingInput" placeholder="ongkir" />
-          </div>
-
-          <button type="button" id="addBtn">+ Tambah</button>
-        </form> 
+        </form>
       </div>
-    </div>
-    
-    <div class="card">
-      <header class="card__title">
-        Daftar Transaksi
-      </header>
-      <div class="table__wrapper">
-        <table>
-          <thead>
-            <tr>
-              <th>No</th>
-              <th>Nomor Resi</th>
-              <th>Ongkir</th>
-              <th>Aksi</th>
-            </tr>
-          </thead>
 
-          <tbody id="shipmentTableBody"></tbody>
-        </table>
+      <div class="card">
+        <header class="card__title">Daftar Transaksi</header>
+        <div class="table__wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>No</th>
+                <th>Nomor Resi</th>
+                <th>Ongkir</th>
+                <th>Aksi</th>
+              </tr>
+            </thead>
+
+            <tbody id="shipmentTableBody"></tbody>
+          </table>
+        </div>
+        <footer class="card__total">
+          <span class="total__label">Total Pembayaran</span>
+          <span class="total__value" id="total"></span>
+        </footer>
       </div>
-      <footer class="card__total">
-        <span class="total__label">Total Pembayaran</span>
-        <span class="total__value" id="total"></span>
-      </footer>
-    </div>
-    
 
-    <div class="card">
-      <header class="card__title">
-        Upload Pdf Laporan
-      </header>
-      <div class="pdf__upload">
-      <label for="pdfInput">Upload PDF Laporan</label>
-      <input type="file" id="pdfInput" accept="application/pdf" />
-      <p id="pdfName">Belum ada file yang dipilih</p>
-    </div>
-    </div>
-    
+      <div class="card">
+        <header class="card__title">Upload Pdf Laporan</header>
+        <div class="pdf__upload">
+          <label for="pdfInput">Upload PDF Laporan</label>
+          <input type="file" id="pdfInput" accept="application/pdf" />
+          <p id="pdfName">Belum ada file yang dipilih</p>
+        </div>
+      </div>
 
-    <button type="button" id="mergeButton">CREATE & MERGE PDF</button>
+      <button type="button" id="mergeButton">CREATE & MERGE PDF</button>
     </div>
     <script src="https://unpkg.com/pdf-lib/dist/pdf-lib.min.js"></script>
     <script src="js/app.js"></script>
