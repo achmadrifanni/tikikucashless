@@ -14,7 +14,28 @@
 
       <div class="card">
         <header class="card__title">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-list-plus-icon lucide-list-plus"><path d="M16 5H3"/><path d="M11 12H3"/><path d="M16 19H3"/><path d="M18 9v6"/><path d="M21 12h-6"/></svg>
+          <span class="card__icon">
+            <svg
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="icon icon-tabler icons-tabler-outline icon-tabler-playlist-add"
+            >
+              <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+              <path d="M19 8h-14" />
+              <path d="M5 12h9" />
+              <path d="M11 16h-6" />
+              <path d="M15 16h6" />
+              <path d="M18 13v6" />
+            </svg>
+          </span>
           <h4>Tambah Transaksi</h4>
         </header>
         <form>
@@ -66,8 +87,27 @@
               </div>
             </div>
 
-            <button type="button" id="addBtn" class="btn btn--primary">
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-plus-icon lucide-plus"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
+            <button
+              type="button"
+              id="addBtn"
+              class="btn btn__icon btn--primary"
+              aria-label="Tambah Transaksi"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="lucide lucide-plus-icon lucide-plus"
+              >
+                <path d="M5 12h14" />
+                <path d="M12 5v14" />
+              </svg>
               <span>Tambah</span>
             </button>
           </div>
@@ -76,8 +116,29 @@
 
       <div class="card">
         <header class="card__title">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-list-icon lucide-list"><path d="M3 5h.01"/><path d="M3 12h.01"/><path d="M3 19h.01"/><path d="M8 5h13"/><path d="M8 12h13"/><path d="M8 19h13"/></svg>
-          <h4>Daftar Transaksi</h4> 
+          <div class="card__icon">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="icon icon-tabler icons-tabler-outline icon-tabler-list"
+            >
+              <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+              <path d="M9 6l11 0" />
+              <path d="M9 12l11 0" />
+              <path d="M9 18l11 0" />
+              <path d="M5 6l0 .01" />
+              <path d="M5 12l0 .01" />
+              <path d="M5 18l0 .01" />
+            </svg>
+          </div>
+          <h4>Daftar Transaksi</h4>
         </header>
         <div class="table__wrapper">
           <table>
