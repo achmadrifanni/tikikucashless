@@ -141,7 +141,7 @@
           <h4>Daftar Transaksi</h4>
         </header>
         <div class="table__wrapper">
-          <table>
+          <table class="table__data">
             <thead>
               <tr>
                 <th>No</th>
@@ -155,8 +155,29 @@
           </table>
         </div>
         <footer class="card__total">
-          <span class="total__label">Total Pembayaran</span>
-          <span class="total__value" id="total"></span>
+          <div class="card__title">
+            <div class="card__icon">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="lucide lucide-wallet"
+              >
+                <path
+                  d="M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1"
+                />
+                <path d="M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4" />
+              </svg>
+            </div>
+            <h4>Total Pembayaran</h4>
+          </div>
+          <span class="total__amount" id="total"></span>
         </footer>
       </div>
 
