@@ -12,11 +12,11 @@
       <h1>TIKIKU</h1>
       <p>Cashless Payment Report</p>
 
-      <div class="card">
-        <header class="card__title">
-          <span class="card__icon">
+      <!-- Tambah Transaksi -->
+      <section class="card">
+        <h3 class="section-title">
+          <span class="section-title__icon" aria-hidden="true">
             <svg
-              aria-hidden="true"
               xmlns="http://www.w3.org/2000/svg"
               width="24"
               height="24"
@@ -26,23 +26,19 @@
               stroke-width="2"
               stroke-linecap="round"
               stroke-linejoin="round"
-              class="icon icon-tabler icons-tabler-outline icon-tabler-playlist-add"
+              class="lucide lucide-square-plus"
             >
-              <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-              <path d="M19 8h-14" />
-              <path d="M5 12h9" />
-              <path d="M11 16h-6" />
-              <path d="M15 16h6" />
-              <path d="M18 13v6" />
+              <rect width="18" height="18" x="3" y="3" rx="2" />
+              <path d="M8 12h8" />
+              <path d="M12 8v8" />
             </svg>
           </span>
-          <h4>Tambah Transaksi</h4>
-        </header>
+          <span class="section-title__text">Tambah Transaksi</span>
+        </h3>
         <form>
           <div class="form__row">
             <div class="form__group">
               <label for="receiptInput">Nomor Resi</label>
-
               <div class="input__group">
                 <span
                   ><svg
@@ -86,7 +82,6 @@
                 />
               </div>
             </div>
-
             <button
               type="button"
               id="addBtn"
@@ -112,11 +107,12 @@
             </button>
           </div>
         </form>
-      </div>
+      </section>
 
-      <div class="card">
-        <header class="card__title">
-          <div class="card__icon">
+      <!-- Daftar Transaksi -->
+      <section class="card">
+        <h3 class="section-title">
+          <span class="section-title__icon" aria-hidden="true">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="24"
@@ -127,19 +123,18 @@
               stroke-width="2"
               stroke-linecap="round"
               stroke-linejoin="round"
-              class="icon icon-tabler icons-tabler-outline icon-tabler-list"
+              class="lucide lucide-list"
             >
-              <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-              <path d="M9 6l11 0" />
-              <path d="M9 12l11 0" />
-              <path d="M9 18l11 0" />
-              <path d="M5 6l0 .01" />
-              <path d="M5 12l0 .01" />
-              <path d="M5 18l0 .01" />
+              <path d="M3 5h.01" />
+              <path d="M3 12h.01" />
+              <path d="M3 19h.01" />
+              <path d="M8 5h13" />
+              <path d="M8 12h13" />
+              <path d="M8 19h13" />
             </svg>
-          </div>
-          <h4>Daftar Transaksi</h4>
-        </header>
+          </span>
+          <span class="section-title__text">Tambah Transaksi</span>
+        </h3>
         <div class="table__wrapper">
           <table class="table__data">
             <thead>
@@ -154,9 +149,9 @@
             <tbody id="shipmentTableBody"></tbody>
           </table>
         </div>
-        <footer class="card__total">
-          <div class="card__title">
-            <div class="card__icon">
+        <div class="total">
+          <h4 class="section-title">
+            <span class="section-title__icon" aria-hidden="true">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="24"
@@ -174,23 +169,67 @@
                 />
                 <path d="M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4" />
               </svg>
-            </div>
-            <h4>Total Pembayaran</h4>
-          </div>
+            </span>
+            <span class="section-title__text">Total Pembayaran</span>
+          </h4>
           <span class="total__amount" id="total"></span>
-        </footer>
-      </div>
-
-      <div class="card">
-        <header class="card__title">Upload Pdf Laporan</header>
-        <div class="pdf__upload">
-          <label for="pdfInput">Upload PDF Laporan</label>
-          <input type="file" id="pdfInput" accept="application/pdf" />
-          <p id="pdfName">Belum ada file yang dipilih</p>
         </div>
-      </div>
+      </section>
 
-      <button type="button" id="mergeButton">CREATE & MERGE PDF</button>
+      <!-- Upload PDF -->
+      <section class="card">
+        <h3 class="section-title">
+          <span class="section-title__icon" aria-hidden="true">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="lucide lucide-upload"
+            >
+              <path d="M12 3v12" />
+              <path d="m17 8-5-5-5 5" />
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+            </svg>
+          </span>
+          <span class="section-title__text">Upload PDF Laporan</span>
+        </h3>
+        <div class="pdf__wrapper">
+          <div class="pdf__upload" id="pdfUpload">
+            <label for="pdfInput">Upload PDF Laporan</label>
+            <input type="file" id="pdfInput" accept="application/pdf" />
+            <!-- <p id="pdfName">Belum ada file yang dipilih</p> -->
+          </div>
+          <button
+            type="button"
+            class="btn btn__icon btn--primary"
+            id="mergeButton"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="32"
+              height="32"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="lucide lucide-merge"
+            >
+              <path d="m8 6 4-4 4 4" />
+              <path d="M12 2v10.3a4 4 0 0 1-1.172 2.872L4 22" />
+              <path d="m20 22-5-5" />
+            </svg>
+            <span> CREATE & MERGE PDF </span>
+          </button>
+        </div>
+      </section>
     </div>
     <script src="https://unpkg.com/pdf-lib/dist/pdf-lib.min.js"></script>
     <script src="js/app.js"></script>

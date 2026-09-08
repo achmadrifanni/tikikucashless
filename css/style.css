@@ -13,6 +13,7 @@ body {
   background-color: #f8fafc;
   display: grid;
   place-items: center;
+  font-size: 14px;
 }
 
 .container {
@@ -32,27 +33,22 @@ body {
   margin-bottom: 0.5rem;
 }
 
-.card__icon {
-  display: grid;
-  place-items: center;
-  background-color: var(--color-primary);
-  color: var(--color-text-inverse);
-  width: 1.5rem;
-  height: 1.5rem;
-  border-radius: 4px;
-  padding: 0.125rem;
-
-  & svg {
-    width: 1.5rem;
-    flex-shrink: 0;
-  }
-}
-
-.card__title {
-  margin-bottom: 1rem;
+.section-title {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.75rem;
+}
+
+.section-title__icon {
+  width: 2rem;
+  height: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--color-primary);
+  color: var(--color-text-inverse);
+  border-radius: 0.5rem;
+  flex-shrink: 0;
 }
 
 .form__row {
@@ -60,6 +56,7 @@ body {
   justify-content: space-between;
   align-items: flex-end;
   gap: 0.5rem;
+  margin-top: 0.5rem;
 }
 
 .form__group {
@@ -102,6 +99,10 @@ body {
   }
 }
 
+.table__wrapper {
+  margin-top: 0.5rem;
+}
+
 .table__data {
   width: 100%;
   border-collapse: collapse;
@@ -123,38 +124,49 @@ body {
   border-bottom: 1px solid #e0e0e0;
 }
 
-.card__total {
+.col-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.total {
   background-color: #f4f6fc;
   border-radius: 0.5rem;
-  padding: 0.25rem 1rem;
+  padding: 0.5rem 2rem;
   margin-top: 1rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
-.total__label {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  color: var(--color-primary);
-  font-weight: bold;
-}
-
-.total__icon {
-  background-color: var(--color-primary-light);
-  padding: 8px;
-  border-radius: 8px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
 .total__amount {
   color: var(--color-primary);
-  font-size: 24px;
+  font-size: 1.25rem;
   font-weight: 700;
 }
+
+.pdf__wrapper {
+  margin-top: 0.5rem;
+  display: flex;
+  gap: 0.5rem;
+  justify-content: space-between;
+}
+
+.pdf__upload {
+  border: 2px dashed #ccc;
+  background-color: #f9f9f9;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* #pdfInput {
+  display: none;
+} */
 
 .btn {
   padding: 0.125rem 1rem;
@@ -179,6 +191,11 @@ body {
 .btn--primary {
   background-color: var(--color-primary);
   color: #fff;
+}
+
+.btn--tertiary {
+  background-color: var(--color-primary-light);
+  color: var(--color-primary);
 }
 
 .btn--secondary {

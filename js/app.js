@@ -7,7 +7,7 @@ const tableBody = document.querySelector("#shipmentTableBody");
 const pdfInput = document.querySelector("#pdfInput");
 const pdfName = document.querySelector("#pdfName");
 const mergeButton = document.querySelector("#mergeButton");
-
+let pdfUpload = document.querySelector("#pdfUpload");
 let selectedPdf = null;
 
 function formatRupiah(value) {
@@ -28,7 +28,7 @@ function renderTable() {
             <td>${index + 1}</td>
             <td>${shipment.receipt}</td>
             <td>${formatRupiah(shipment.shipping)}</td>
-            <td>
+            <td class="col-center">
                 <button type="button" data-index="${index}" class="btn btn__icon btn--secondary">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-trash"><path d="M10 11v6"/><path d="M14 11v6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M3 6h18"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
                     <span>Hapus</span>
@@ -77,23 +77,23 @@ function drawTable(page, shipments) {
   // HEADER
   // =========================
 
-  page.drawText("No", {
+  page.drawText("QRIS", {
     x: startX + 10,
     y: currentY - 10,
-    size: 10,
+    size: 8,
   });
 
-  page.drawText("Nomor Resi", {
-    x: startX + noWidth + 10,
-    y: currentY - 10,
-    size: 10,
-  });
+  // page.drawText("Nomor Resi", {
+  //   x: startX + noWidth + 10,
+  //   y: currentY - 10,
+  //   size: 10,
+  // });
 
-  page.drawText("Ongkir", {
-    x: startX + noWidth + receiptWidth + 10,
-    y: currentY - 10,
-    size: 10,
-  });
+  // page.drawText("Ongkir", {
+  //   x: startX + noWidth + receiptWidth + 10,
+  //   y: currentY - 10,
+  //   size: 10,
+  // });
 
   drawHorizontalLine(page, startX, startX + tableWidth, currentY);
 
@@ -109,19 +109,19 @@ function drawTable(page, shipments) {
     page.drawText(String(index + 1), {
       x: startX + 10,
       y: currentY - 10,
-      size: 10,
+      size: 8,
     });
 
     page.drawText(shipment.receipt, {
       x: startX + noWidth + 10,
       y: currentY - 10,
-      size: 10,
+      size: 8,
     });
 
     page.drawText(formatRupiah(shipment.shipping), {
       x: startX + noWidth + receiptWidth + 10,
       y: currentY - 10,
-      size: 10,
+      size: 8,
     });
 
     currentY -= rowHeight;
@@ -140,13 +140,13 @@ function drawTable(page, shipments) {
   page.drawText("Total", {
     x: startX + noWidth + 10,
     y: currentY - 10,
-    size: 10,
+    size: 8,
   });
 
   page.drawText(formatRupiah(total), {
     x: startX + noWidth + receiptWidth + 10,
     y: currentY - 10,
-    size: 10,
+    size: 8,
   });
 
   currentY -= rowHeight;
@@ -258,7 +258,7 @@ pdfInput.addEventListener("change", function () {
     return;
   }
   selectedPdf = file;
-  pdfName.textContent = file.name;
+  // pdfName.textContent = file.name;
   console.log(selectedPdf);
 });
 
