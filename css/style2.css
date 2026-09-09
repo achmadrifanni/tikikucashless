@@ -34,7 +34,14 @@ body {
 .container {
   max-width: 2000px;
   margin: 0 auto;
-  display: flex;
+  /* display: flex;
+  flex-wrap: wrap; */
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: auto;
+  grid-template-areas:
+    "qris transfer debit"
+    "qris transfer pdf";
   gap: 0.5rem;
 }
 
@@ -80,6 +87,10 @@ body {
   justify-content: center;
   border-radius: 0.5rem;
   flex-shrink: 0;
+}
+
+.pdf {
+  grid-area: pdf;
 }
 
 .form__row {
@@ -144,6 +155,7 @@ body {
   overflow: hidden;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
   text-align: center;
+  margin-bottom: 1rem;
 }
 
 .table__data th {
@@ -162,6 +174,36 @@ body {
   place-items: center;
 }
 
+.total {
+  background-color: #f4f6fc;
+  border-radius: 0 0 8px 8px;
+}
+
+.total__amount {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: var(--color-primary);
+  margin-right: 2rem;
+}
+
+.pdf__wrapper {
+  margin-top: 0.5rem;
+  display: flex;
+  gap: 0.5rem;
+  justify-content: space-between;
+}
+
+.pdf__upload {
+  border: 2px dashed #ccc;
+  background-color: #f9f9f9;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
 .btn {
   padding: 0.125rem 1rem;
   border-radius: 0.25rem;
@@ -169,7 +211,6 @@ body {
   cursor: pointer;
   transition: background-color 0.3s ease;
 }
-
 .btn__icon {
   display: flex;
   justify-content: center;

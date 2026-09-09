@@ -14,7 +14,7 @@
     </header>
     <main>
       <div class="container">
-        <div class="card">
+        <div class="card qris">
           <!-- Tambah Transaksi -->
           <section class="card__section">
             <header class="card__header">
@@ -240,9 +240,64 @@
               </header>
             </div>
           </section>
+
+          <!-- <section class="card__section">
+            <header class="card__header">
+              <h3 class="section-title">
+                <span class="section-title__icon" aria-hidden="true">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    class="lucide lucide-upload"
+                  >
+                    <path d="M12 3v12" />
+                    <path d="m17 8-5-5-5 5" />
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                  </svg>
+                </span>
+                <span class="section-title__text">Upload PDF Laporan</span>
+              </h3>
+            </header>
+            <div class="pdf__wrapper">
+              <div class="pdf__upload" id="pdfUpload">
+                <label for="pdfInput">Upload PDF Laporan</label>
+                <input type="file" id="pdfInput" accept="application/pdf" />
+              </div>
+              <button
+                type="button"
+                class="btn btn__icon btn--primary"
+                id="mergeButton"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="32"
+                  height="32"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  class="lucide lucide-merge"
+                >
+                  <path d="m8 6 4-4 4 4" />
+                  <path d="M12 2v10.3a4 4 0 0 1-1.172 2.872L4 22" />
+                  <path d="m20 22-5-5" />
+                </svg>
+                <span> CREATE & MERGE PDF </span>
+              </button>
+            </div>
+          </section> -->
         </div>
 
-        <div class="card">
+        <div class="card transfer">
           <header class="card__header">
             <h3 class="section-title">
               <span class="section-title__icon" aria-hidden="true">
@@ -341,7 +396,8 @@
             </button>
           </form>
         </div>
-        <div class="card">
+
+        <div class="card debit">
           <header class="card__header">
             <h3 class="section-title">
               <span class="section-title__icon" aria-hidden="true">
@@ -439,6 +495,62 @@
               <span>Tambah</span>
             </button>
           </form>
+        </div>
+
+        <div class="card pdf">
+          <header class="card__header">
+            <h3 class="section-title">
+              <span class="section-title__icon" aria-hidden="true">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  class="lucide lucide-upload"
+                >
+                  <path d="M12 3v12" />
+                  <path d="m17 8-5-5-5 5" />
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                </svg>
+              </span>
+              <span class="section-title__text">Upload PDF Laporan</span>
+            </h3>
+          </header>
+          <div class="pdf__wrapper">
+            <div class="pdf__upload" id="pdfUpload">
+              <label for="pdfInput">Upload PDF Laporan</label>
+              <input type="file" id="pdfInput" accept="application/pdf" />
+              <!-- <p id="pdfName">Belum ada file yang dipilih</p> -->
+            </div>
+            <button
+              type="button"
+              class="btn btn__icon btn--primary"
+              id="mergeButton"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="32"
+                height="32"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="lucide lucide-merge"
+              >
+                <path d="m8 6 4-4 4 4" />
+                <path d="M12 2v10.3a4 4 0 0 1-1.172 2.872L4 22" />
+                <path d="m20 22-5-5" />
+              </svg>
+              <span> CREATE & MERGE PDF </span>
+            </button>
+          </div>
         </div>
       </div>
     </main>
