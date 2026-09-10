@@ -1,9 +1,23 @@
-const shipments = [];
+// const shipments = [];
+const qrisShipments = [];
+const trfShipments = [];
+const debitShipments = [];
 
-const receiptInput = document.querySelector("#receiptInput");
-const shippingInput = document.querySelector("#shippingInput");
-const addBtn = document.querySelector("#addBtn");
-const tableBody = document.querySelector("#shipmentTableBody");
+const qrisReceiptInput = document.querySelector("#qrisReceiptInput");
+const qrisShippingInput = document.querySelector("#qrisShippingInput");
+const trfReceiptInput = document.querySelector("#trfReceiptInput");
+const trfShippingInput = document.querySelector("#trfShippingInput");
+const debitReceiptInput = document.querySelector("#debitReceiptInput");
+const debitShippingInput = document.querySelector("#debitShippingInput");
+
+const qrisAddBtn = document.querySelector("#qrisAddBtn");
+const trfAddBtn = document.querySelector("#trfAddBtn");
+const debitAddBtn = document.querySelector("#debitAddBtn");
+
+const qrisTableBody = document.querySelector("#qrisTableBody");
+const trfTableBody = document.querySelector("#trfTableBody");
+const debitTableBody = document.querySelector("#debitTableBody");
+
 const pdfInput = document.querySelector("#pdfInput");
 const pdfName = document.querySelector("#pdfName");
 const mergeButton = document.querySelector("#mergeButton");
@@ -18,7 +32,41 @@ function formatRupiah(value) {
   }).format(value);
 }
 
-function renderTable() {
+function addShipment(receiptInput, shippingInput, shipmentArray) {
+  const receipt = receiptInput.value.trim();
+  const shippingCost = Number(shippingInput.value);
+
+  if (!/^\d{12}$/.test(receipt)) {
+    alert("Nomor Resi harus berupa angka sebanyak 12 digit");
+    return false;
+  }
+
+  if (!shippingCost || shippingCost <= 0) {
+    alert("Ongkir harus lebih dari 0");
+  }
+
+  if (!receipt || !shippingCost) {
+    alert("Data belum lengkap");
+    return;
+  }
+
+  shipmentArray.push({
+    receipt,
+    shippingCost,
+  });
+
+  receiptInput.value = "";
+  shippingInput.value = "";
+
+  receiptInput.focus();
+
+  return true;
+}
+
+function renderTable(shipments, tableSelector, totalSelector) {
+  const tableBody = document.querySelector(tableSelector);
+  const totalElement = document.querySelector(totalSelector);
+
   tableBody.innerHTML = "";
 
   shipments.forEach((shipment, index) => {
@@ -27,16 +75,22 @@ function renderTable() {
     row.innerHTML = `
             <td>${index + 1}</td>
             <td>${shipment.receipt}</td>
-            <td>${formatRupiah(shipment.shipping)}</td>
-            <td class="col-center">
-                <button type="button" data-index="${index}" class="btn btn__icon btn--secondary">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-trash"><path d="M10 11v6"/><path d="M14 11v6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M3 6h18"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
-                    <span>Hapus</span>
+            <td>${formatRupiah(shipment.shippingCost)}</td>
+            <td>
+                <button type="button" data-index="${index}" class="btn btn--danger">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-trash"><path d="M10 11v6"/><path d="M14 11v6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M3 6h18"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                    
                 </button>
             </td>
         `;
 
     tableBody.appendChild(row);
+
+    const total = shipments.reduce(function (sum, shipment) {
+      return sum + shipment.shippingCost;
+    }, 0);
+
+    totalElement.textContent = formatRupiah(total);
   });
 }
 
@@ -202,45 +256,67 @@ async function loadPdf() {
   downloadPdf(modifiedPdf);
 }
 
-addBtn.addEventListener("click", function () {
-  const receipt = receiptInput.value.trim();
-  const shipping = Number(shippingInput.value);
+qrisAddBtn.addEventListener("click", function () {
+  const success = addShipment(
+    qrisReceiptInput,
+    qrisShippingInput,
+    qrisShipments,
+  );
 
-  if (!/^\d{12}$/.test(receipt)) {
-    alert("Nomor Resi harus berupa angka sebanyak 12 digit");
-    return;
+  if (success) {
+    renderTable(qrisShipments, "#qrisTableBody", "#qrisTotal");
   }
-
-  if (!shipping || shipping <= 0) {
-    alert("Ongkir harus lebih dari 0");
-  }
-
-  if (!receipt || !shipping) {
-    alert("Data belum lengkap");
-    return;
-  }
-
-  shipments.push({
-    receipt,
-    shipping,
-  });
-
-  renderTable();
-  calculateTotal();
-
-  receiptInput.value = "";
-  shippingInput.value = "";
-
-  receiptInput.focus();
 });
 
-tableBody.addEventListener("click", function (event) {
+qrisTableBody.addEventListener("click", function (event) {
   if (event.target.tagName === "BUTTON") {
     const index = Number(event.target.dataset.index);
 
-    shipments.splice(index, 1);
+    qrisShipments.splice(index, 1);
 
-    renderTable();
+    renderTable(qrisShipments, "#qrisTableBody", "#qrisTotal");
+    calculateTotal();
+  }
+});
+
+trfAddBtn.addEventListener("click", function () {
+  const success = addShipment(trfReceiptInput, trfShippingInput, trfShipments);
+
+  if (success) {
+    renderTable(trfShipments, "#trfTableBody", "#trfTotal");
+  }
+});
+
+trfTableBody.addEventListener("click", function (event) {
+  if (event.target.tagName === "BUTTON") {
+    const index = Number(event.target.dataset.index);
+
+    trfShipments.splice(index, 1);
+
+    renderTable(trfShipments, "#trfTableBody", "#trfTotal");
+    calculateTotal();
+  }
+});
+
+debitAddBtn.addEventListener("click", function () {
+  const success = addShipment(
+    debitReceiptInput,
+    debitShippingInput,
+    debitShipments,
+  );
+
+  if (success) {
+    renderTable(debitShipments, "#debitTableBody", "#debitTotal");
+  }
+});
+
+debitTableBody.addEventListener("click", function (event) {
+  if (event.target.tagName === "BUTTON") {
+    const index = Number(event.target.dataset.index);
+
+    debitShipments.splice(index, 1);
+
+    renderTable(debitShipments, "#debitTableBody", "#debitTotal");
     calculateTotal();
   }
 });
