@@ -112,9 +112,9 @@ function downloadPdf(pdfBytes) {
   URL.revokeObjectURL(url);
 }
 
-function drawTable(page, shipments) {
-  const startX = 500;
-  const startY = 300;
+function drawTable(page, shipments, startX, startY, title) {
+  // const startX = 500;
+  // const startY = 300;
 
   const rowHeight = 15;
 
@@ -131,23 +131,11 @@ function drawTable(page, shipments) {
   // HEADER
   // =========================
 
-  page.drawText("QRIS", {
+  page.drawText(title, {
     x: startX + 10,
     y: currentY - 10,
     size: 8,
   });
-
-  // page.drawText("Nomor Resi", {
-  //   x: startX + noWidth + 10,
-  //   y: currentY - 10,
-  //   size: 10,
-  // });
-
-  // page.drawText("Ongkir", {
-  //   x: startX + noWidth + receiptWidth + 10,
-  //   y: currentY - 10,
-  //   size: 10,
-  // });
 
   drawHorizontalLine(page, startX, startX + tableWidth, currentY);
 
@@ -172,7 +160,7 @@ function drawTable(page, shipments) {
       size: 8,
     });
 
-    page.drawText(formatRupiah(shipment.shipping), {
+    page.drawText(formatRupiah(shipment.shippingCost), {
       x: startX + noWidth + receiptWidth + 10,
       y: currentY - 10,
       size: 8,
@@ -188,7 +176,7 @@ function drawTable(page, shipments) {
   // =========================
 
   const total = shipments.reduce(function (sum, shipment) {
-    return sum + shipment.shipping;
+    return sum + shipment.shippingCost;
   }, 0);
 
   page.drawText("Total", {
@@ -244,13 +232,9 @@ async function loadPdf() {
   console.log("Width:", width);
   console.log("Height:", height);
 
-  // page.drawText("TEST", {
-  //   x: 500,
-  //   y: 300,
-  //   size: 20,
-  // });
-
-  drawTable(page, shipments);
+  drawTable(page, qrisShipments, 100, 300, "QRIS");
+  drawTable(page, trfShipments, 300, 300, "TRF");
+  drawTable(page, debitShipments, 500, 300, "DEBIT");
 
   const modifiedPdf = await pdfDoc.save();
   downloadPdf(modifiedPdf);
