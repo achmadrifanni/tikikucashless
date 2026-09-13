@@ -63,9 +63,57 @@ function addShipment(receiptInput, shippingInput, shipmentArray) {
   return true;
 }
 
+function setupShipmentForm(
+  addButton,
+  receiptInput,
+  shippingInput,
+  shipments,
+  tableSelector,
+  totalSelector,
+) {
+  addButton.addEventListener("click", function () {
+    const success = addShipment(receiptInput, shippingInput, shipments);
+
+    if (success) {
+      renderTable(shipments, tableSelector, totalSelector);
+    }
+  });
+}
+
+function setupDeleteShipment(
+  tableBody,
+  shipments,
+  tableSelector,
+  totalSelector,
+) {
+  tableBody.addEventListener("click", function (event) {
+    const deleteButton = event.target.closest(".btn--danger");
+
+    if (!deleteButton) return;
+
+    const index = Number(deleteButton.dataset.index);
+
+    shipments.splice(index, 1);
+
+    renderTable(shipments, tableSelector, totalSelector);
+  });
+}
+
+function calculateTotal(shipments) {
+  return shipments.reduce(function (sum, shipment) {
+    return sum + shipment.shippingCost;
+  }, 0);
+}
+
+function renderTotal(shipments, totalSelector) {
+  const totalElement = document.querySelector(totalSelector);
+  const total = calculateTotal(shipments);
+
+  totalElement.textContent = formatRupiah(total);
+}
+
 function renderTable(shipments, tableSelector, totalSelector) {
   const tableBody = document.querySelector(tableSelector);
-  const totalElement = document.querySelector(totalSelector);
 
   tableBody.innerHTML = "";
 
@@ -85,21 +133,8 @@ function renderTable(shipments, tableSelector, totalSelector) {
         `;
 
     tableBody.appendChild(row);
-
-    const total = shipments.reduce(function (sum, shipment) {
-      return sum + shipment.shippingCost;
-    }, 0);
-
-    totalElement.textContent = formatRupiah(total);
   });
-}
-
-function calculateTotal() {
-  const total = shipments.reduce(function (sum, shipment) {
-    return sum + shipment.shipping;
-  }, 0);
-
-  document.querySelector("#total").textContent = formatRupiah(total);
+  renderTotal(shipments, totalSelector);
 }
 
 function downloadPdf(pdfBytes) {
@@ -175,9 +210,11 @@ function drawTable(page, shipments, startX, startY, title) {
   // TOTAL
   // =========================
 
-  const total = shipments.reduce(function (sum, shipment) {
-    return sum + shipment.shippingCost;
-  }, 0);
+  // const total = shipments.reduce(function (sum, shipment) {
+  //   return sum + shipment.shippingCost;
+  // }, 0);
+
+  const total = calculateTotal(shipments);
 
   page.drawText("Total", {
     x: startX + noWidth + 10,
@@ -232,78 +269,100 @@ async function loadPdf() {
   console.log("Width:", width);
   console.log("Height:", height);
 
-  drawTable(page, qrisShipments, 100, 300, "QRIS");
-  drawTable(page, trfShipments, 300, 300, "TRF");
-  drawTable(page, debitShipments, 500, 300, "DEBIT");
+  // if (qrisShipments.length > 0) {
+  //   drawTable(page, qrisShipments, 100, 300, "QRIS");
+  // }
+
+  // if (trfShipments.length > 0) {
+  //   drawTable(page, trfShipments, 300, 300, "TRANSFER");
+  // }
+
+  // if (debitShipments.length > 0) {
+  //   drawTable(page, debitShipments, 500, 300, "DEBIT");
+  // }
+  const tables = [];
+
+  if (qrisShipments.length > 0) {
+    tables.push({
+      shipments: qrisShipments,
+      title: "QRIS",
+    });
+  }
+
+  if (trfShipments.length > 0) {
+    tables.push({
+      shipments: trfShipments,
+      title: "TRANSFER",
+    });
+  }
+
+  if (debitShipments.length > 0) {
+    tables.push({
+      shipments: debitShipments,
+      title: "DEBIT",
+    });
+  }
+
+  const tableWidth = 155;
+  const tableGap = 15;
+  const startX = 200;
+  const startY = 310;
+
+  tables.forEach(function (table, index) {
+    const x = startX + index * (tableWidth + tableGap);
+
+    drawTable(page, table.shipments, x, startY, table.title);
+  });
 
   const modifiedPdf = await pdfDoc.save();
   downloadPdf(modifiedPdf);
 }
 
-qrisAddBtn.addEventListener("click", function () {
-  const success = addShipment(
-    qrisReceiptInput,
-    qrisShippingInput,
-    qrisShipments,
-  );
+// qris
+setupShipmentForm(
+  qrisAddBtn,
+  qrisReceiptInput,
+  qrisShippingInput,
+  qrisShipments,
+  "#qrisTableBody",
+  "#qrisTotal",
+);
 
-  if (success) {
-    renderTable(qrisShipments, "#qrisTableBody", "#qrisTotal");
-  }
-});
+setupDeleteShipment(
+  qrisTableBody,
+  qrisShipments,
+  "#qrisTableBody",
+  "#qrisTotal",
+);
 
-qrisTableBody.addEventListener("click", function (event) {
-  if (event.target.tagName === "BUTTON") {
-    const index = Number(event.target.dataset.index);
+// trf
+setupShipmentForm(
+  trfAddBtn,
+  trfReceiptInput,
+  trfShippingInput,
+  trfShipments,
+  "#trfTableBody",
+  "#trfTotal",
+);
 
-    qrisShipments.splice(index, 1);
+setupDeleteShipment(trfTableBody, trfShipments, "#trfTableBody", "#trfTotal");
 
-    renderTable(qrisShipments, "#qrisTableBody", "#qrisTotal");
-    calculateTotal();
-  }
-});
+// debit
+setupShipmentForm(
+  debitAddBtn,
+  debitReceiptInput,
+  debitShippingInput,
+  debitShipments,
+  "#debitTableBody",
+  "#debitTotal",
+);
 
-trfAddBtn.addEventListener("click", function () {
-  const success = addShipment(trfReceiptInput, trfShippingInput, trfShipments);
-
-  if (success) {
-    renderTable(trfShipments, "#trfTableBody", "#trfTotal");
-  }
-});
-
-trfTableBody.addEventListener("click", function (event) {
-  if (event.target.tagName === "BUTTON") {
-    const index = Number(event.target.dataset.index);
-
-    trfShipments.splice(index, 1);
-
-    renderTable(trfShipments, "#trfTableBody", "#trfTotal");
-    calculateTotal();
-  }
-});
-
-debitAddBtn.addEventListener("click", function () {
-  const success = addShipment(
-    debitReceiptInput,
-    debitShippingInput,
-    debitShipments,
-  );
-
-  if (success) {
-    renderTable(debitShipments, "#debitTableBody", "#debitTotal");
-  }
-});
-
-debitTableBody.addEventListener("click", function (event) {
-  if (event.target.tagName === "BUTTON") {
-    const index = Number(event.target.dataset.index);
-
-    debitShipments.splice(index, 1);
-
-    renderTable(debitShipments, "#debitTableBody", "#debitTotal");
-    calculateTotal();
-  }
-});
+setupDeleteShipment(
+  debitTableBody,
+  debitShipments,
+  "#debitTableBody",
+  "#debitTotal",
+);
 
 pdfInput.addEventListener("change", function () {
   const file = pdfInput.files[0];
