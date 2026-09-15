@@ -1,4 +1,3 @@
-// const shipments = [];
 const qrisShipments = [];
 const trfShipments = [];
 const debitShipments = [];
@@ -10,13 +9,13 @@ const trfShippingInput = document.querySelector("#trfShippingInput");
 const debitReceiptInput = document.querySelector("#debitReceiptInput");
 const debitShippingInput = document.querySelector("#debitShippingInput");
 
-const qrisAddBtn = document.querySelector("#qrisAddBtn");
-const trfAddBtn = document.querySelector("#trfAddBtn");
-const debitAddBtn = document.querySelector("#debitAddBtn");
-
 const qrisTableBody = document.querySelector("#qrisTableBody");
 const trfTableBody = document.querySelector("#trfTableBody");
 const debitTableBody = document.querySelector("#debitTableBody");
+
+const qrisAddBtn = document.querySelector("#qrisAddBtn");
+const trfAddBtn = document.querySelector("#trfAddBtn");
+const debitAddBtn = document.querySelector("#debitAddBtn");
 
 const pdfInput = document.querySelector("#pdfInput");
 const pdfName = document.querySelector("#pdfName");
