@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tikiku | Cashless Payment Report</title>
+    <link rel="stylesheet" href="css/reset.css" />
+    <link rel="stylesheet" href="css/style5.css" />
+  </head>
+  <body>
+    <div class="container">
+      <header class="card header">
+        <img src="assets/logo.png" alt="logo tikiku" class="logo" />
+        <h2>Cashless Payment Report</h2>
+      </header>
+      <div class="card transaction">
+        <header class="card__header">
+          <h3 class="section-title">
+            <span class="section-title__icon" aria-hidden="true">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="lucide lucide-square-plus"
+              >
+                <rect width="18" height="18" x="3" y="3" rx="2" />
+                <path d="M8 12h8" />
+                <path d="M12 8v8" />
+              </svg>
+            </span>
+            <span class="section-title__text">Transaksi</span>
+          </h3>
+        </header>
+      </div>
+
+      <!-- PDF -->
+      <div class="card pdf">
+        <header class="card__header">
+          <h3 class="section-title">
+            <span class="section-title__icon" aria-hidden="true">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="lucide lucide-upload"
+              >
+                <path d="M12 3v12" />
+                <path d="m17 8-5-5-5 5" />
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+              </svg>
+            </span>
+            <span class="section-title__text">Upload PDF Laporan</span>
+          </h3>
+        </header>
+        <div class="pdf__wrapper">
+          <div class="pdf__upload" id="pdfUpload">
+            <label for="pdfInput">Upload PDF Laporan</label>
+            <input type="file" id="pdfInput" accept="application/pdf" />
+            <!-- <p id="pdfName">Belum ada file yang dipilih</p> -->
+          </div>
+          <button
+            type="button"
+            class="btn btn__icon btn--wide btn--primary"
+            id="mergeButton"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="32"
+              height="32"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="lucide lucide-merge"
+            >
+              <path d="m8 6 4-4 4 4" />
+              <path d="M12 2v10.3a4 4 0 0 1-1.172 2.872L4 22" />
+              <path d="m20 22-5-5" />
+            </svg>
+            <span> CREATE & MERGE PDF </span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

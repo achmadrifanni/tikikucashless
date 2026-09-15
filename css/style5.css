@@ -1,0 +1,143 @@
+@import url("https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,200..900;1,200..900&display=swap");
+
+:root {
+  --color-primary: #0433ab;
+  --color-primary-light: #ebf4ff;
+  --color-secondary: #d90000;
+  --color-background: #fff;
+  --color-background-body: #f8fafc;
+  --color-text-inverse: #fff;
+}
+
+body {
+  font-family: "Source Sans 3", sans-serif;
+  background-color: var(--color-background-body);
+  padding: 1rem;
+  font-size: 14px;
+}
+
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  grid-template-rows: auto auto;
+  grid-auto-flow: row;
+  grid-template-areas:
+    "transaction header"
+    "transaction pdf";
+  gap: 0.5rem;
+}
+
+.card {
+  background-color: var(--color-background);
+  box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.1);
+  border-radius: 0.5rem;
+  padding: 1rem;
+}
+
+.card__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+
+  & strong {
+    color: var(--color-primary);
+    background-color: var(--color-primary-light);
+    padding: 0.25rem 1rem;
+    border-radius: 0.5rem;
+  }
+}
+
+.section-title {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  color: var(--color-primary);
+}
+
+.section-title__icon {
+  width: 2rem;
+  height: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.5rem;
+  flex-shrink: 0;
+}
+
+.btn {
+  padding: 0.125rem 1rem;
+  border-radius: 0.25rem;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.btn__icon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.25rem;
+
+  & svg {
+    width: 1rem;
+    flex-shrink: 0;
+  }
+}
+
+.btn--wide {
+  width: 100%;
+}
+
+.btn--primary {
+  background-color: var(--color-primary);
+  color: #fff;
+}
+
+.btn--tertiary {
+  background-color: var(--color-primary-light);
+  color: var(--color-primary);
+}
+
+.btn--secondary {
+  background-color: var(--color-secondary);
+  color: #fff;
+}
+
+.btn--danger:hover {
+  background-color: var(--color-secondary);
+  color: var(--color-text-inverse);
+}
+
+.header {
+  grid-area: header;
+  text-align: center;
+
+  h2 {
+    font-size: 1.25rem;
+  }
+}
+
+.logo {
+  width: 150px;
+  display: block;
+  margin: 0 auto;
+}
+
+.transaction {
+  grid-area: transaction;
+}
+
+.pdf {
+  grid-area: pdf;
+}
+.pdf__upload {
+  border: 2px dashed #ccc;
+  background-color: #f9f9f9;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  width: 100%;
+  margin-bottom: 0.5rem;
+}

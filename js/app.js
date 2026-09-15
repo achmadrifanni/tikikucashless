@@ -21,6 +21,7 @@ const debitTableBody = document.querySelector("#debitTableBody");
 const pdfInput = document.querySelector("#pdfInput");
 const pdfName = document.querySelector("#pdfName");
 const mergeButton = document.querySelector("#mergeButton");
+
 let pdfUpload = document.querySelector("#pdfUpload");
 let selectedPdf = null;
 
@@ -269,17 +270,6 @@ async function loadPdf() {
   console.log("Width:", width);
   console.log("Height:", height);
 
-  // if (qrisShipments.length > 0) {
-  //   drawTable(page, qrisShipments, 100, 300, "QRIS");
-  // }
-
-  // if (trfShipments.length > 0) {
-  //   drawTable(page, trfShipments, 300, 300, "TRANSFER");
-  // }
-
-  // if (debitShipments.length > 0) {
-  //   drawTable(page, debitShipments, 500, 300, "DEBIT");
-  // }
   const tables = [];
 
   if (qrisShipments.length > 0) {
