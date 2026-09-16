@@ -24,6 +24,9 @@ const mergeButton = document.querySelector("#mergeButton");
 let pdfUpload = document.querySelector("#pdfUpload");
 let selectedPdf = null;
 
+
+
+
 function formatRupiah(value) {
   return new Intl.NumberFormat("id-ID", {
     style: "currency",
@@ -377,3 +380,5 @@ mergeButton.addEventListener("click", function () {
   }
   loadPdf();
 });
+
+
