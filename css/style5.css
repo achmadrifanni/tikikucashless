@@ -142,3 +142,12 @@ body {
   width: 100%;
   margin-bottom: 0.5rem;
 }
+
+
+.transaction__content {
+  display: none;
+}
+
+.transaction__content.active {
+  display: block;
+}

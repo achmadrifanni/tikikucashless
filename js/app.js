@@ -24,7 +24,18 @@ const mergeButton = document.querySelector("#mergeButton");
 let pdfUpload = document.querySelector("#pdfUpload");
 let selectedPdf = null;
 
+const tabBtn = document.querySelectorAll(".tab__btn");
+const transaction = document.querySelectorAll(".transaction__content");
 
+tabBtn.forEach((tab, index)=>{
+  tab.addEventListener("click", ()=>{
+    tabBtn.forEach(tab=>{tab.classList.remove("active")});
+    tab.classList.add("active");
+
+    transaction.forEach(content => {content.classList.remove("active")});
+    transaction[index].classList.add("active");
+  });
+});
 
 
 function formatRupiah(value) {
