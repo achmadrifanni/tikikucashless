@@ -27,6 +27,9 @@ let selectedPdf = null;
 const tabBtn = document.querySelectorAll(".tab__btn");
 const transaction = document.querySelectorAll(".transaction__content");
 
+// tabBtn[0].classList.add("active");
+// transaction[0].classList.add("active");
+
 tabBtn.forEach((tab, index)=>{
   tab.addEventListener("click", ()=>{
     tabBtn.forEach(tab=>{tab.classList.remove("active")});
