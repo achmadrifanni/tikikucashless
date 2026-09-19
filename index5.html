@@ -9,45 +9,18 @@
   </head>
   <body>
     <div class="container">
-      <header class="card header">
-        <img src="assets/logo.png" alt="logo tikiku" class="logo" />
-        <h2>Cashless Payment Report</h2>
-      </header>
+      <!-- Transaksi -->
       <div class="card transaction">
-        <header class="card__header">
-          <h3 class="section-title">
-            <span class="section-title__icon" aria-hidden="true">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                class="lucide lucide-square-plus"
-              >
-                <rect width="18" height="18" x="3" y="3" rx="2" />
-                <path d="M8 12h8" />
-                <path d="M12 8v8" />
-              </svg>
-            </span>
-            <span class="section-title__text">Transaksi</span>
-          </h3>
-        </header>
-        
         <div class="tab">
           <button class="tab__btn active">QRIS</button>
           <button class="tab__btn">Transfer</button>
           <button class="tab__btn">Debit</button>
         </div>
-        
-        <div class="transactions">
-          <div class="transaction__content active">
+
+        <div class="payment">
+          <div class="payment__content active">
             <!-- Tambah Transaksi -->
-            <section class="card__section">              
+            <section class="card__section">
               <form action="">
                 <div class="form__row">
                   <div class="form__group">
@@ -81,7 +54,7 @@
                         pattern="\d*"
                         inputmode="numeric"
                         id="qrisReceiptInput"
-                        placeholder="Nomor Resi"
+                        placeholder="660xxxxxxxxx"
                       />
                     </div>
                   </div>
@@ -96,12 +69,36 @@
                       />
                     </div>
                   </div>
+                  <button
+                    type="button"
+                    id="qrisAddBtn"
+                    class="btn btn__icon btn--wide btn--primary"
+                    aria-label="Tambah Transaksi"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      class="lucide lucide-plus-icon lucide-plus"
+                    >
+                      <path d="M5 12h14" />
+                      <path d="M12 5v14" />
+                    </svg>
+                    <span>Tambah</span>
+                  </button>
                 </div>
-                <button
+                <!-- <button
                   type="button"
                   id="qrisAddBtn"
                   class="btn btn__icon btn--wide btn--primary"
                   aria-label="Tambah Transaksi"
+                  disabled
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -118,54 +115,14 @@
                     <path d="M5 12h14" />
                     <path d="M12 5v14" />
                   </svg>
-                  <span>Tambah</span>
-                </button>
+                  <span>Upload PDF Borongan</span>
+                </button> -->
               </form>
             </section>
 
             <!-- Daftar Transaksi -->
             <section class="card__section">
-              <header class="card__header">
-                <h3 class="section-title">
-                  <span class="section-title__icon" aria-hidden="true">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="24"
-                      height="24"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      stroke-width="2"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      class="lucide lucide-list"
-                    >
-                      <path d="M3 5h.01" />
-                      <path d="M3 12h.01" />
-                      <path d="M3 19h.01" />
-                      <path d="M8 5h13" />
-                      <path d="M8 12h13" />
-                      <path d="M8 19h13" />
-                    </svg>
-                  </span>
-                  <span class="section-title__text">Daftar Transaksi</span>
-                </h3>
-              </header>
-              <div class="table__wrapper">
-                <table class="table__data">
-                  <thead>
-                    <tr>
-                      <th>No</th>
-                      <th>Nomor Resi</th>
-                      <th>Ongkir</th>
-                      <th>Aksi</th>
-                    </tr>
-                  </thead>
-
-                  <tbody id="qrisTableBody"></tbody>
-                </table>
-              </div>
-              <div class="total">
+              <div class="card__wrapper">
                 <header class="card__header">
                   <h3 class="section-title">
                     <span class="section-title__icon" aria-hidden="true">
@@ -187,18 +144,33 @@
                         <path d="M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4" />
                       </svg>
                     </span>
-                    <span class="section-title__text">Total Pembayaran QRIS</span>
+                    <span class="section-title__text">
+                      Total Pembayaran QRIS
+                    </span>
                   </h3>
                   <span class="total__amount" id="qrisTotal">Rp 0</span>
                 </header>
               </div>
+              <div class="table__wrapper">
+                <table class="table__data">
+                  <thead>
+                    <tr>
+                      <th>No</th>
+                      <th>Nomor Resi</th>
+                      <th>Ongkir</th>
+                      <th>Aksi</th>
+                    </tr>
+                  </thead>
+
+                  <tbody id="qrisTableBody"></tbody>
+                </table>
+              </div>
             </section>
           </div>
 
-          <div class="transaction__content">
+          <div class="payment__content">
             <!-- Tambah Transaksi -->
             <section class="card__section">
-              
               <form action="">
                 <div class="form__row">
                   <div class="form__group">
@@ -232,7 +204,7 @@
                         pattern="\d*"
                         inputmode="numeric"
                         id="trfReceiptInput"
-                        placeholder="Nomor Resi"
+                        placeholder="660xxxxxxxxx"
                       />
                     </div>
                   </div>
@@ -247,38 +219,12 @@
                       />
                     </div>
                   </div>
-                </div>
-                <button
-                  type="button"
-                  id="trfAddBtn"
-                  class="btn btn__icon btn--wide btn--primary"
-                  aria-label="Tambah Transaksi"
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    class="lucide lucide-plus-icon lucide-plus"
+                  <button
+                    type="button"
+                    id="trfAddBtn"
+                    class="btn btn__icon btn--wide btn--primary"
+                    aria-label="Tambah Transaksi"
                   >
-                    <path d="M5 12h14" />
-                    <path d="M12 5v14" />
-                  </svg>
-                  <span>Tambah</span>
-                </button>
-              </form>
-            </section>
-
-            <!-- Daftar Transaksi -->
-            <section class="card__section">
-              <header class="card__header">
-                <h3 class="section-title">
-                  <span class="section-title__icon" aria-hidden="true">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       width="24"
@@ -289,34 +235,20 @@
                       stroke-width="2"
                       stroke-linecap="round"
                       stroke-linejoin="round"
-                      class="lucide lucide-list"
+                      class="lucide lucide-plus-icon lucide-plus"
                     >
-                      <path d="M3 5h.01" />
-                      <path d="M3 12h.01" />
-                      <path d="M3 19h.01" />
-                      <path d="M8 5h13" />
-                      <path d="M8 12h13" />
-                      <path d="M8 19h13" />
+                      <path d="M5 12h14" />
+                      <path d="M12 5v14" />
                     </svg>
-                  </span>
-                  <span class="section-title__text">Daftar Transaksi</span>
-                </h3>
-              </header>
-              <div class="table__wrapper">
-                <table class="table__data">
-                  <thead>
-                    <tr>
-                      <th>No</th>
-                      <th>Nomor Resi</th>
-                      <th>Ongkir</th>
-                      <th>Aksi</th>
-                    </tr>
-                  </thead>
+                    <span>Tambah</span>
+                  </button>
+                </div>
+              </form>
+            </section>
 
-                  <tbody id="trfTableBody"></tbody>
-                </table>
-              </div>
-              <div class="total">
+            <!-- Daftar Transaksi -->
+            <section class="card__section">
+              <div class="card__wrapper">
                 <header class="card__header">
                   <h3 class="section-title">
                     <span class="section-title__icon" aria-hidden="true">
@@ -338,40 +270,33 @@
                         <path d="M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4" />
                       </svg>
                     </span>
-                    <span class="section-title__text">Total Pembayaran Transfer</span>
+                    <span class="section-title__text"
+                      >Total Pembayaran Transfer</span
+                    >
                   </h3>
                   <span class="total__amount" id="trfTotal">Rp 0</span>
                 </header>
               </div>
+              <div class="table__wrapper">
+                <table class="table__data">
+                  <thead>
+                    <tr>
+                      <th>No</th>
+                      <th>Nomor Resi</th>
+                      <th>Ongkir</th>
+                      <th>Aksi</th>
+                    </tr>
+                  </thead>
+
+                  <tbody id="trfTableBody"></tbody>
+                </table>
+              </div>
             </section>
           </div>
 
-          <div class="transaction__content">
+          <div class="payment__content">
             <!-- Tambah Transaksi -->
             <section class="card__section">
-              <header class="card__header">
-                <h3 class="section-title">
-                  <span class="section-title__icon" aria-hidden="true">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="24"
-                      height="24"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      stroke-width="2"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      class="lucide lucide-square-plus"
-                    >
-                      <rect width="18" height="18" x="3" y="3" rx="2" />
-                      <path d="M8 12h8" />
-                      <path d="M12 8v8" />
-                    </svg>
-                  </span>
-                  <span class="section-title__text">Tambah Transaksi</span>
-                </h3>
-              </header>
               <form action="">
                 <div class="form__row">
                   <div class="form__group">
@@ -405,7 +330,7 @@
                         pattern="\d*"
                         inputmode="numeric"
                         id="debitReceiptInput"
-                        placeholder="Nomor Resi"
+                        placeholder="660xxxxxxxxx"
                       />
                     </div>
                   </div>
@@ -420,38 +345,12 @@
                       />
                     </div>
                   </div>
-                </div>
-                <button
-                  type="button"
-                  id="debitAddBtn"
-                  class="btn btn__icon btn--wide btn--primary"
-                  aria-label="Tambah Transaksi"
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    class="lucide lucide-plus-icon lucide-plus"
+                  <button
+                    type="button"
+                    id="debitAddBtn"
+                    class="btn btn__icon btn--wide btn--primary"
+                    aria-label="Tambah Transaksi"
                   >
-                    <path d="M5 12h14" />
-                    <path d="M12 5v14" />
-                  </svg>
-                  <span>Tambah</span>
-                </button>
-              </form>
-            </section>
-
-            <!-- Daftar Transaksi -->
-            <section class="card__section">
-              <header class="card__header">
-                <h3 class="section-title">
-                  <span class="section-title__icon" aria-hidden="true">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       width="24"
@@ -462,34 +361,20 @@
                       stroke-width="2"
                       stroke-linecap="round"
                       stroke-linejoin="round"
-                      class="lucide lucide-list"
+                      class="lucide lucide-plus-icon lucide-plus"
                     >
-                      <path d="M3 5h.01" />
-                      <path d="M3 12h.01" />
-                      <path d="M3 19h.01" />
-                      <path d="M8 5h13" />
-                      <path d="M8 12h13" />
-                      <path d="M8 19h13" />
+                      <path d="M5 12h14" />
+                      <path d="M12 5v14" />
                     </svg>
-                  </span>
-                  <span class="section-title__text">Daftar Transaksi</span>
-                </h3>
-              </header>
-              <div class="table__wrapper">
-                <table class="table__data">
-                  <thead>
-                    <tr>
-                      <th>No</th>
-                      <th>Nomor Resi</th>
-                      <th>Ongkir</th>
-                      <th>Aksi</th>
-                    </tr>
-                  </thead>
+                    <span>Tambah</span>
+                  </button>
+                </div>
+              </form>
+            </section>
 
-                  <tbody id="debitTableBody"></tbody>
-                </table>
-              </div>
-              <div class="total">
+            <!-- Daftar Transaksi -->
+            <section class="card__section">
+              <div class="card__wrapper">
                 <header class="card__header">
                   <h3 class="section-title">
                     <span class="section-title__icon" aria-hidden="true">
@@ -511,77 +396,98 @@
                         <path d="M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4" />
                       </svg>
                     </span>
-                    <span class="section-title__text">Total Pembayaran Debit</span>
+                    <span class="section-title__text"
+                      >Total Pembayaran Debit</span
+                    >
                   </h3>
                   <span class="total__amount" id="debitTotal">Rp 0</span>
                 </header>
               </div>
+              <div class="table__wrapper">
+                <table class="table__data">
+                  <thead>
+                    <tr>
+                      <th>No</th>
+                      <th>Nomor Resi</th>
+                      <th>Ongkir</th>
+                      <th>Aksi</th>
+                    </tr>
+                  </thead>
+
+                  <tbody id="debitTableBody"></tbody>
+                </table>
+              </div>
             </section>
           </div>
         </div>
-
-
       </div>
 
-      <!-- PDF -->
-      <div class="card pdf">
-        <header class="card__header">
-          <h3 class="section-title">
-            <span class="section-title__icon" aria-hidden="true">
+      <!-- SIDEBAR -->
+      <aside class="sidebar">
+        <!-- HEADER -->
+        <header class="card header">
+          <img src="assets/logo.png" alt="logo tikiku" class="logo" />
+          <h2>Cashless Payment Report</h2>
+        </header>
+        <!-- PDF -->
+        <div class="card pdf">
+          <header class="card__header">
+            <h3 class="section-title">
+              <span class="section-title__icon" aria-hidden="true">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  class="lucide lucide-upload"
+                >
+                  <path d="M12 3v12" />
+                  <path d="m17 8-5-5-5 5" />
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                </svg>
+              </span>
+              <span class="section-title__text">Upload PDF Laporan</span>
+            </h3>
+          </header>
+          <div class="pdf__wrapper">
+            <div class="pdf__upload" id="pdfUpload">
+              <label for="pdfInput">Upload PDF Laporan</label>
+              <input type="file" id="pdfInput" accept="application/pdf" />
+              <!-- <p id="pdfName">Belum ada file yang dipilih</p> -->
+            </div>
+            <button
+              type="button"
+              class="btn btn__icon btn--wide btn--primary"
+              id="mergeButton"
+            >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
+                width="32"
+                height="32"
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
                 stroke-width="2"
                 stroke-linecap="round"
                 stroke-linejoin="round"
-                class="lucide lucide-upload"
+                class="lucide lucide-merge"
               >
-                <path d="M12 3v12" />
-                <path d="m17 8-5-5-5 5" />
-                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                <path d="m8 6 4-4 4 4" />
+                <path d="M12 2v10.3a4 4 0 0 1-1.172 2.872L4 22" />
+                <path d="m20 22-5-5" />
               </svg>
-            </span>
-            <span class="section-title__text">Upload PDF Laporan</span>
-          </h3>
-        </header>
-        <div class="pdf__wrapper">
-          <div class="pdf__upload" id="pdfUpload">
-            <label for="pdfInput">Upload PDF Laporan</label>
-            <input type="file" id="pdfInput" accept="application/pdf" />
-            <!-- <p id="pdfName">Belum ada file yang dipilih</p> -->
+              <span> CREATE & MERGE PDF </span>
+            </button>
           </div>
-          <button
-            type="button"
-            class="btn btn__icon btn--wide btn--primary"
-            id="mergeButton"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="32"
-              height="32"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              class="lucide lucide-merge"
-            >
-              <path d="m8 6 4-4 4 4" />
-              <path d="M12 2v10.3a4 4 0 0 1-1.172 2.872L4 22" />
-              <path d="m20 22-5-5" />
-            </svg>
-            <span> CREATE & MERGE PDF </span>
-          </button>
         </div>
-      </div>
+      </aside>
     </div>
     <script src="https://unpkg.com/pdf-lib/dist/pdf-lib.min.js"></script>
     <script src="js/app.js"></script>
-    
   </body>
 </html>

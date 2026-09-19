@@ -17,15 +17,23 @@ body {
 }
 
 .container {
-  max-width: 800px;
+  max-width: 1000px;
   margin: 0 auto;
   display: grid;
   grid-template-columns: 2fr 1fr;
-  grid-template-rows: auto auto;
-  grid-auto-flow: row;
-  grid-template-areas:
-    "transaction header"
-    "transaction pdf";
+  align-items: start;
+  grid-template-areas: "transaction sidebar";
+  gap: 0.5rem;
+}
+
+.transaction {
+  grid-area: transaction;
+}
+
+.sidebar {
+  grid-area: sidebar;
+  display: flex;
+  flex-direction: column;
   gap: 0.5rem;
 }
 
@@ -40,14 +48,13 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 0.5rem;
+}
 
-  & strong {
-    color: var(--color-primary);
-    background-color: var(--color-primary-light);
-    padding: 0.25rem 1rem;
-    border-radius: 0.5rem;
-  }
+.card__wrapper {
+  background-color: var(--color-primary-light);
+  border-radius: 0.5rem;
+  margin-top: 1rem;
+  padding: 0.5rem;
 }
 
 .section-title {
@@ -112,7 +119,6 @@ body {
 }
 
 .header {
-  grid-area: header;
   text-align: center;
 
   h2 {
@@ -129,14 +135,18 @@ body {
 .tab {
   display: flex;
   align-items: center;
-  justify-content: space-evenly;
-  gap: 8px;
+  gap: 0.5rem;
   border-bottom: 1px solid #e5e7eb;
+  margin-bottom: 0.5rem;
+
+  & * {
+    flex: 1;
+  }
 }
 
 .tab__btn {
   position: relative;
-  padding: 12px 20px;
+  padding: 0.5rem 1rem;
   border: none;
   background: transparent;
   color: #6b7280;
@@ -150,7 +160,7 @@ body {
 .tab__btn::after {
   content: "";
   position: absolute;
-  left: 10%;
+  left: 0;
   bottom: -1px;
   width: 100%;
   height: 2px;
@@ -162,7 +172,6 @@ body {
 .tab__btn.active::after {
   transform: translateX(-10%) scaleX(1);
 }
-
 
 /* Hover */
 .tab__btn:hover {
@@ -180,15 +189,103 @@ body {
   transform: scaleX(1);
 }
 
-
-.transaction {
-  grid-area: transaction;
+.payment__content {
+  display: none;
 }
 
-
-.pdf {
-  grid-area: pdf;
+.payment__content.active {
+  display: block;
 }
+
+.form__row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 0.5rem;
+  margin-block: 0.5rem;
+}
+
+.form__group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  width: 100%;
+}
+
+.input__group {
+  display: flex;
+}
+
+.input__group:has(span, input) {
+  font-size: 0.875rem;
+}
+
+.input__group input:focus {
+  outline: none;
+  border: 1px solid var(--color-primary);
+}
+
+.input__group span {
+  padding: 0.125rem 0.75rem;
+  background-color: #ddd;
+  border-radius: 4px 0 0 4px;
+  color: #475569;
+  border: 1px solid #e2e8f0;
+  display: grid;
+  place-items: center;
+  width: 3rem;
+}
+
+.input__group input {
+  padding: 0.125rem 0.75rem;
+  border-left: 0;
+  border: 1px solid #e2e8f0;
+  border-radius: 0 4px 4px 0;
+  outline: none;
+
+  &::placeholder {
+    color: #94a3b8;
+  }
+}
+
+.table__wrapper {
+  margin-top: 0.5rem;
+}
+
+.table__data {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: var(--color-background);
+  border-radius: 8px 8px 0 0;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  text-align: center;
+}
+
+.table__data th {
+  background-color: var(--color-primary);
+  color: var(--color-text-inverse);
+  font-weight: 600;
+  padding: 0.25rem 1rem;
+}
+
+.table__data td {
+  padding: 0.25rem 1rem;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.col-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.total__amount {
+  color: var(--color-primary);
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
 .pdf__upload {
   border: 2px dashed #ccc;
   background-color: #f9f9f9;
@@ -196,13 +293,4 @@ body {
   border-radius: 0.5rem;
   width: 100%;
   margin-bottom: 0.5rem;
-}
-
-
-.transaction__content {
-  display: none;
-}
-
-.transaction__content.active {
-  display: block;
 }

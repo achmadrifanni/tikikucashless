@@ -21,25 +21,29 @@ const pdfInput = document.querySelector("#pdfInput");
 const pdfName = document.querySelector("#pdfName");
 const mergeButton = document.querySelector("#mergeButton");
 
+const { rgb } = PDFLib;
 let pdfUpload = document.querySelector("#pdfUpload");
 let selectedPdf = null;
 
 const tabBtn = document.querySelectorAll(".tab__btn");
-const transaction = document.querySelectorAll(".transaction__content");
+const payment = document.querySelectorAll(".payment__content");
 
 // tabBtn[0].classList.add("active");
 // transaction[0].classList.add("active");
 
-tabBtn.forEach((tab, index)=>{
-  tab.addEventListener("click", ()=>{
-    tabBtn.forEach(tab=>{tab.classList.remove("active")});
+tabBtn.forEach((tab, index) => {
+  tab.addEventListener("click", () => {
+    tabBtn.forEach((tab) => {
+      tab.classList.remove("active");
+    });
     tab.classList.add("active");
 
-    transaction.forEach(content => {content.classList.remove("active")});
-    transaction[index].classList.add("active");
+    payment.forEach((content) => {
+      content.classList.remove("active");
+    });
+    payment[index].classList.add("active");
   });
 });
-
 
 function formatRupiah(value) {
   return new Intl.NumberFormat("id-ID", {
@@ -169,22 +173,30 @@ function drawTable(page, shipments, startX, startY, title) {
   // const startY = 300;
 
   const rowHeight = 15;
-
-  const noWidth = 15;
-  const receiptWidth = 80;
-  const costWidth = 60;
+  const noWidth = 10;
+  const receiptWidth = 70;
+  const costWidth = 55;
+  const totalTableHeight = rowHeight * (shipments.length + 2);
 
   // Total lebar tabel
   const tableWidth = noWidth + receiptWidth + costWidth;
 
   let currentY = startY;
 
+  page.drawRectangle({
+    x: startX,
+    y: currentY - totalTableHeight,
+    width: tableWidth,
+    height: totalTableHeight,
+    color: rgb(1.0, 1.0, 1.0),
+  });
+
   // =========================
   // HEADER
   // =========================
 
   page.drawText(title, {
-    x: startX + 10,
+    x: startX + 20,
     y: currentY - 10,
     size: 8,
   });
@@ -201,7 +213,7 @@ function drawTable(page, shipments, startX, startY, title) {
 
   shipments.forEach(function (shipment, index) {
     page.drawText(String(index + 1), {
-      x: startX + 10,
+      x: startX + 7,
       y: currentY - 10,
       size: 8,
     });
@@ -226,10 +238,6 @@ function drawTable(page, shipments, startX, startY, title) {
   // =========================
   // TOTAL
   // =========================
-
-  // const total = shipments.reduce(function (sum, shipment) {
-  //   return sum + shipment.shippingCost;
-  // }, 0);
 
   const total = calculateTotal(shipments);
 
@@ -310,8 +318,8 @@ async function loadPdf() {
   }
 
   const tableWidth = 155;
-  const tableGap = 15;
-  const startX = 200;
+  const tableGap = 5;
+  const startX = 180;
   const startY = 310;
 
   tables.forEach(function (table, index) {
@@ -394,5 +402,3 @@ mergeButton.addEventListener("click", function () {
   }
   loadPdf();
 });
-
-
