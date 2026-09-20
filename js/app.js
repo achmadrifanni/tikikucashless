@@ -28,8 +28,6 @@ let selectedPdf = null;
 const tabBtn = document.querySelectorAll(".tab__btn");
 const payment = document.querySelectorAll(".payment__content");
 
-// tabBtn[0].classList.add("active");
-// transaction[0].classList.add("active");
 
 tabBtn.forEach((tab, index) => {
   tab.addEventListener("click", () => {
@@ -169,8 +167,6 @@ function downloadPdf(pdfBytes) {
 }
 
 function drawTable(page, shipments, startX, startY, title) {
-  // const startX = 500;
-  // const startY = 300;
 
   const rowHeight = 15;
   const noWidth = 10;
