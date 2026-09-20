@@ -2,6 +2,8 @@ const qrisShipments = [];
 const trfShipments = [];
 const debitShipments = [];
 
+let activeTransaction = "qris";
+
 const qrisReceiptInput = document.querySelector("#qrisReceiptInput");
 const qrisShippingInput = document.querySelector("#qrisShippingInput");
 const trfReceiptInput = document.querySelector("#trfReceiptInput");
@@ -21,13 +23,15 @@ const pdfInput = document.querySelector("#pdfInput");
 const pdfName = document.querySelector("#pdfName");
 const mergeButton = document.querySelector("#mergeButton");
 
+const pdfExtract = document.getElementById("pdfExtract");
+const pdfStatus = document.getElementById("pdfStatus");
+
 const { rgb } = PDFLib;
 let pdfUpload = document.querySelector("#pdfUpload");
 let selectedPdf = null;
 
 const tabBtn = document.querySelectorAll(".tab__btn");
 const payment = document.querySelectorAll(".payment__content");
-
 
 tabBtn.forEach((tab, index) => {
   tab.addEventListener("click", () => {
@@ -40,6 +44,19 @@ tabBtn.forEach((tab, index) => {
       content.classList.remove("active");
     });
     payment[index].classList.add("active");
+
+    // Tentukan transaksi aktif
+    if (index === 0) {
+      activeTransaction = "qris";
+    }
+
+    if (index === 1) {
+      activeTransaction = "transfer";
+    }
+
+    if (index === 2) {
+      activeTransaction = "debit";
+    }
   });
 });
 
@@ -98,6 +115,161 @@ function setupShipmentForm(
     }
   });
 }
+
+function getActiveShipment() {
+  switch (activeTransaction) {
+    case "qris":
+      return qrisShipments;
+
+    case "transfer":
+      return trfShipments;
+
+    case "debit":
+      return debitShipments;
+
+    default:
+      return qrisShipments;
+  }
+}
+
+function importShipmentsFromPdf(pdfShipments) {
+  let importedCount = 0;
+
+  const activeShipments = getActiveShipment();
+
+  for (const shipment of pdfShipments) {
+    const alreadyExists = activeShipments.some(
+      (item) => item.receipt === shipment.receipt,
+    );
+
+    if (alreadyExists) {
+      continue;
+    }
+
+    activeShipments.push({
+      receipt: shipment.receipt,
+      shippingCost: shipment.cost,
+    });
+
+    importedCount++;
+  }
+
+  renderActiveTransaction();
+
+  return importedCount;
+}
+
+async function extractPdfText(file) {
+  const arrayBuffer = await file.arrayBuffer();
+
+  const pdf = await pdfjsLib.getDocument({
+    data: arrayBuffer,
+  }).promise;
+
+  let text = "";
+
+  for (let pageNumber = 1; pageNumber <= pdf.numPages; pageNumber++) {
+    const page = await pdf.getPage(pageNumber);
+
+    const textContent = await page.getTextContent();
+
+    const pageText = textContent.items.map((item) => item.str).join(" ");
+
+    text += pageText + "\n";
+  }
+
+  return text;
+}
+
+function parseShipmentData(text) {
+  const shipments = [];
+
+  // Cari semua No Connote (12 digit)
+  const connoteRegex = /\b\d{12}\b/g;
+  const connoteMatches = [...text.matchAll(connoteRegex)];
+
+  for (let i = 0; i < connoteMatches.length; i++) {
+    const currentMatch = connoteMatches[i];
+
+    const receipt = currentMatch[0];
+
+    // Mulai setelah nomor connote
+    const startIndex = currentMatch.index + currentMatch[0].length;
+
+    // Berhenti sebelum nomor connote berikutnya
+    const endIndex =
+      i + 1 < connoteMatches.length ? connoteMatches[i + 1].index : text.length;
+
+    const transactionText = text.slice(startIndex, endIndex);
+
+    // Cari biaya seperti 32,000 / 33,000 / 1,250,000
+    const costMatches = transactionText.match(/\b\d{1,3}(?:,\d{3})+\b/g);
+
+    if (!costMatches) {
+      continue;
+    }
+
+    // Ambil biaya pertama setelah connote
+    const costText = costMatches[0];
+
+    const cost = Number(costText.replace(/,/g, ""));
+
+    shipments.push({
+      receipt,
+      cost,
+    });
+  }
+
+  return shipments;
+}
+
+function renderActiveTransaction() {
+  const activeShipments = getActiveShipment();
+
+  if (activeTransaction === "qris") {
+    renderTable(activeShipments, "#qrisTableBody", "#qrisTotal");
+  }
+
+  if (activeTransaction === "transfer") {
+    renderTable(activeShipments, "#trfTableBody", "#trfTotal");
+  }
+
+  if (activeTransaction === "debit") {
+    renderTable(activeShipments, "#debitTableBody", "#debitTotal");
+  }
+}
+
+pdfExtract.addEventListener("change", async function () {
+  const file = this.files[0];
+
+  if (!file) {
+    return;
+  }
+
+  try {
+    pdfStatus.textContent = "Membaca PDF...";
+
+    const text = await extractPdfText(file);
+
+    const pdfShipments = parseShipmentData(text);
+
+    if (pdfShipments.length === 0) {
+      pdfStatus.textContent = "Tidak ditemukan data No Connote dan Biaya.";
+
+      return;
+    }
+
+    const importedCount = importShipmentsFromPdf(pdfShipments);
+
+    pdfStatus.textContent = `${importedCount} transaksi berhasil diimport.`;
+  } catch (error) {
+    console.error("PDF import error:", error);
+
+    pdfStatus.textContent = "Gagal membaca PDF.";
+  }
+
+  this.value = "";
+});
 
 function setupDeleteShipment(
   tableBody,
@@ -167,7 +339,6 @@ function downloadPdf(pdfBytes) {
 }
 
 function drawTable(page, shipments, startX, startY, title) {
-
   const rowHeight = 15;
   const noWidth = 10;
   const receiptWidth = 70;
