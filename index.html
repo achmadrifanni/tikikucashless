@@ -13,9 +13,15 @@
       <main class="card transaction">
         <!-- TAB -->
         <div class="tab">
-          <button class="tab__btn active">QRIS</button>
-          <button class="tab__btn">Transfer</button>
-          <button class="tab__btn">Debit</button>
+          <button type="button" class="tab__btn active" data-transaction="qris">
+            QRIS
+          </button>
+          <button type="button" class="tab__btn" data-transaction="transfer">
+            Transfer
+          </button>
+          <button type="button" class="tab__btn" data-transaction="debit">
+            Debit
+          </button>
         </div>
 
         <!-- PAYMENT -->
@@ -99,18 +105,18 @@
                   </button>
                 </div>
                 <div class="shipment-import">
-                  <label for="pdfExtract" class="shipment-import__label">
+                  <label for="qrisPdfExtract" class="shipment-import__label">
                     Upload file Borongan
                   </label>
 
                   <input
                     type="file"
-                    id="pdfExtract"
+                    id="qrisPdfExtract"
                     class="shipment-import__input"
                     accept="application/pdf"
                   />
 
-                  <p id="pdfStatus" class="shipment-import__status"></p>
+                  <p id="qrisPdfStatus" class="shipment-import__status"></p>
                 </div>
               </form>
             </section>
@@ -241,6 +247,20 @@
                     <span>Tambah</span>
                   </button>
                 </div>
+                <div class="shipment-import">
+                  <label for="trfPdfExtract" class="shipment-import__label">
+                    Upload file Borongan
+                  </label>
+
+                  <input
+                    type="file"
+                    id="trfPdfExtract"
+                    class="shipment-import__input"
+                    accept="application/pdf"
+                  />
+
+                  <p id="trfPdfStatus" class="shipment-import__status"></p>
+                </div>
               </form>
             </section>
 
@@ -369,6 +389,20 @@
                     </svg>
                     <span>Tambah</span>
                   </button>
+                </div>
+                <div class="shipment-import">
+                  <label for="debitPdfExtract" class="shipment-import__label">
+                    Upload file Borongan
+                  </label>
+
+                  <input
+                    type="file"
+                    id="debitPdfExtract"
+                    class="shipment-import__input"
+                    accept="application/pdf"
+                  />
+
+                  <p id="debitPdfStatus" class="shipment-import__status"></p>
                 </div>
               </form>
             </section>

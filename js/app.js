@@ -3,6 +3,7 @@ const trfShipments = [];
 const debitShipments = [];
 
 let activeTransaction = "qris";
+const maxShipment = 18;
 
 const qrisReceiptInput = document.querySelector("#qrisReceiptInput");
 const qrisShippingInput = document.querySelector("#qrisShippingInput");
@@ -23,8 +24,14 @@ const pdfInput = document.querySelector("#pdfInput");
 const pdfName = document.querySelector("#pdfName");
 const mergeButton = document.querySelector("#mergeButton");
 
-const pdfExtract = document.getElementById("pdfExtract");
-const pdfStatus = document.getElementById("pdfStatus");
+// const pdfExtract = document.getElementById("pdfExtract");
+const qrisPdfExtract = document.querySelector("#qrisPdfExtract");
+const trfPdfExtract = document.querySelector("#trfPdfExtract");
+const debitPdfExtract = document.querySelector("#debitPdfExtract");
+
+const qrisPdfStatus = document.getElementById("qrisPdfStatus");
+const trfPdfStatus = document.getElementById("trfPdfStatus");
+const debitPdfStatus = document.getElementById("debitPdfStatus");
 
 const { rgb } = PDFLib;
 let pdfUpload = document.querySelector("#pdfUpload");
@@ -45,18 +52,7 @@ tabBtn.forEach((tab, index) => {
     });
     payment[index].classList.add("active");
 
-    // Tentukan transaksi aktif
-    if (index === 0) {
-      activeTransaction = "qris";
-    }
-
-    if (index === 1) {
-      activeTransaction = "transfer";
-    }
-
-    if (index === 2) {
-      activeTransaction = "debit";
-    }
+    activeTransaction = tab.dataset.transaction;
   });
 });
 
@@ -71,6 +67,11 @@ function formatRupiah(value) {
 function addShipment(receiptInput, shippingInput, shipmentArray) {
   const receipt = receiptInput.value.trim();
   const shippingCost = Number(shippingInput.value);
+
+  if (shipmentArray.length >= maxShipment) {
+    alert(`Maksimal ${maxShipment} data dalam satu transaksi.`);
+    return;
+  }
 
   if (!/^\d{12}$/.test(receipt)) {
     alert("Nomor Resi harus berupa angka sebanyak 12 digit");
@@ -114,6 +115,63 @@ function setupShipmentForm(
       renderTable(shipments, tableSelector, totalSelector);
     }
   });
+}
+
+async function handlePdfExtract(file, statusElement, transaction) {
+  if (!file) {
+    return;
+  }
+
+  try {
+    // Tentukan transaksi yang sedang diproses
+    activeTransaction = transaction;
+
+    console.log("================================");
+    console.log("PDF UPLOAD");
+    console.log("Transaction:", activeTransaction);
+    console.log("File:", file.name);
+    console.log("================================");
+
+    statusElement.textContent = "Membaca PDF...";
+
+    // =========================
+    // EXTRACT
+    // =========================
+
+    const text = await extractPdfText(file);
+
+    console.log("Extracted text:");
+    console.log(text);
+
+    // =========================
+    // PARSE
+    // =========================
+
+    const pdfShipments = parseShipmentData(text);
+
+    console.log("Parsed shipments:");
+    console.log(pdfShipments);
+
+    if (pdfShipments.length === 0) {
+      statusElement.textContent = "Tidak ditemukan data No Connote dan Biaya.";
+
+      return;
+    }
+
+    // =========================
+    // IMPORT
+    // =========================
+
+    const importedCount = importShipmentsFromPdf(pdfShipments);
+
+    console.log("Imported:", importedCount);
+
+    statusElement.textContent = `${importedCount} transaksi berhasil diimport.`;
+  } catch (error) {
+    console.error("PDF import error:", error);
+
+    statusElement.textContent = "Gagal membaca PDF.";
+  }
 }
 
 function getActiveShipment() {
@@ -226,47 +284,41 @@ function parseShipmentData(text) {
 function renderActiveTransaction() {
   const activeShipments = getActiveShipment();
 
-  if (activeTransaction === "qris") {
-    renderTable(activeShipments, "#qrisTableBody", "#qrisTotal");
-  }
+  switch (activeTransaction) {
+    case "qris":
+      renderTable(activeShipments, "#qrisTableBody", "#qrisTotal");
+      break;
 
-  if (activeTransaction === "transfer") {
-    renderTable(activeShipments, "#trfTableBody", "#trfTotal");
-  }
+    case "transfer":
+      renderTable(activeShipments, "#trfTableBody", "#trfTotal");
+      break;
 
-  if (activeTransaction === "debit") {
-    renderTable(activeShipments, "#debitTableBody", "#debitTotal");
+    case "debit":
+      renderTable(activeShipments, "#debitTableBody", "#debitTotal");
+      break;
   }
 }
 
-pdfExtract.addEventListener("change", async function () {
-  const file = this.files[0];
+qrisPdfExtract.addEventListener("change", function () {
+  activeTransaction = "qris";
 
-  if (!file) {
-    return;
-  }
+  handlePdfExtract(this.files[0], qrisPdfStatus, "qris");
 
-  try {
-    pdfStatus.textContent = "Membaca PDF...";
+  this.value = "";
+});
 
-    const text = await extractPdfText(file);
+trfPdfExtract.addEventListener("change", function () {
+  activeTransaction = "transfer";
 
-    const pdfShipments = parseShipmentData(text);
+  handlePdfExtract(this.files[0], trfPdfStatus, "transfer");
 
-    if (pdfShipments.length === 0) {
-      pdfStatus.textContent = "Tidak ditemukan data No Connote dan Biaya.";
+  this.value = "";
+});
 
-      return;
-    }
+debitPdfExtract.addEventListener("change", function () {
+  activeTransaction = "debit";
 
-    const importedCount = importShipmentsFromPdf(pdfShipments);
-
-    pdfStatus.textContent = `${importedCount} transaksi berhasil diimport.`;
-  } catch (error) {
-    console.error("PDF import error:", error);
-
-    pdfStatus.textContent = "Gagal membaca PDF.";
-  }
+  handlePdfExtract(this.files[0], debitPdfStatus, "debit");
 
   this.value = "";
 });
