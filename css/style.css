@@ -22,7 +22,7 @@ body {
   max-width: 1000px;
   margin: 0 auto;
   display: grid;
-  grid-template-columns: 2fr 1fr;
+  grid-template-columns: 2fr 1.5fr;
   align-items: start;
   grid-template-areas: "transaction sidebar";
   gap: 0.5rem;
@@ -110,7 +110,7 @@ body {
 .header {
   text-align: center;
 
-  h2 {
+  h1 {
     font-size: 1.25rem;
   }
 }
@@ -276,6 +276,17 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.grand__item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.grand__total {
+  color: var(--color-primary);
+  font-size: 1.25rem;
+  font-weight: 700;
 }
 
 .pdf__upload {

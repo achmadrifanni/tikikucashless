@@ -12,20 +12,14 @@
       <!-- TRANSAKSI -->
       <main class="card transaction">
         <!-- TAB -->
-        <div class="tab">
-          <button type="button" class="tab__btn active" data-transaction="qris">
-            QRIS
-          </button>
-          <button type="button" class="tab__btn" data-transaction="transfer">
-            Transfer
-          </button>
-          <button type="button" class="tab__btn" data-transaction="debit">
-            Debit
-          </button>
-        </div>
+        <section class="tab">
+          <button type="button" class="tab__btn active" data-transaction="qris">QRIS</button>
+          <button type="button" class="tab__btn" data-transaction="transfer">Transfer</button>
+          <button type="button" class="tab__btn" data-transaction="debit">Debit</button>
+        </section>
 
         <!-- PAYMENT -->
-        <div class="payment">
+        <section class="payment">
           <!-- QRIS -->
           <div class="payment__content active">
             <!-- Tambah Transaksi -->
@@ -105,16 +99,9 @@
                   </button>
                 </div>
                 <div class="shipment-import">
-                  <label for="qrisPdfExtract" class="shipment-import__label">
-                    Upload file Borongan
-                  </label>
+                  <label for="qrisPdfExtract" class="shipment-import__label"> Upload file Borongan </label>
 
-                  <input
-                    type="file"
-                    id="qrisPdfExtract"
-                    class="shipment-import__input"
-                    accept="application/pdf"
-                  />
+                  <input type="file" id="qrisPdfExtract" class="shipment-import__input" accept="application/pdf" />
 
                   <p id="qrisPdfStatus" class="shipment-import__status"></p>
                 </div>
@@ -124,7 +111,7 @@
             <!-- Total Transaksi -->
             <section>
               <header class="payment__info">
-                <h3 class="section-title">
+                <h2 class="section-title">
                   <span class="section-title__icon" aria-hidden="true">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -144,10 +131,8 @@
                       <path d="M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4" />
                     </svg>
                   </span>
-                  <span class="section-title__text">
-                    Total Pembayaran QRIS
-                  </span>
-                </h3>
+                  <span class="section-title__text"> Total Pembayaran QRIS </span>
+                </h2>
                 <span class="payment__total" id="qrisTotal">Rp 0</span>
               </header>
             </section>
@@ -223,12 +208,7 @@
                       />
                     </div>
                   </div>
-                  <button
-                    type="button"
-                    id="trfAddBtn"
-                    class="btn btn__icon btn--primary"
-                    aria-label="Tambah Transaksi"
-                  >
+                  <button type="button" id="trfAddBtn" class="btn btn__icon btn--primary" aria-label="Tambah Transaksi">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       width="24"
@@ -248,16 +228,9 @@
                   </button>
                 </div>
                 <div class="shipment-import">
-                  <label for="trfPdfExtract" class="shipment-import__label">
-                    Upload file Borongan
-                  </label>
+                  <label for="trfPdfExtract" class="shipment-import__label"> Upload file Borongan </label>
 
-                  <input
-                    type="file"
-                    id="trfPdfExtract"
-                    class="shipment-import__input"
-                    accept="application/pdf"
-                  />
+                  <input type="file" id="trfPdfExtract" class="shipment-import__input" accept="application/pdf" />
 
                   <p id="trfPdfStatus" class="shipment-import__status"></p>
                 </div>
@@ -267,7 +240,7 @@
             <!-- Total Transaksi -->
             <section>
               <header class="payment__info">
-                <h3 class="section-title">
+                <h2 class="section-title">
                   <span class="section-title__icon" aria-hidden="true">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -287,10 +260,8 @@
                       <path d="M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4" />
                     </svg>
                   </span>
-                  <span class="section-title__text"
-                    >Total Pembayaran Transfer</span
-                  >
-                </h3>
+                  <span class="section-title__text">Total Pembayaran Transfer</span>
+                </h2>
                 <span class="payment__total" id="trfTotal">Rp 0</span>
               </header>
             </section>
@@ -391,16 +362,9 @@
                   </button>
                 </div>
                 <div class="shipment-import">
-                  <label for="debitPdfExtract" class="shipment-import__label">
-                    Upload file Borongan
-                  </label>
+                  <label for="debitPdfExtract" class="shipment-import__label"> Upload file Borongan </label>
 
-                  <input
-                    type="file"
-                    id="debitPdfExtract"
-                    class="shipment-import__input"
-                    accept="application/pdf"
-                  />
+                  <input type="file" id="debitPdfExtract" class="shipment-import__input" accept="application/pdf" />
 
                   <p id="debitPdfStatus" class="shipment-import__status"></p>
                 </div>
@@ -410,7 +374,7 @@
             <!-- Total Transaksi -->
             <section>
               <header class="payment__info">
-                <h3 class="section-title">
+                <h2 class="section-title">
                   <span class="section-title__icon" aria-hidden="true">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -430,10 +394,8 @@
                       <path d="M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4" />
                     </svg>
                   </span>
-                  <span class="section-title__text"
-                    >Total Pembayaran Debit</span
-                  >
-                </h3>
+                  <span class="section-title__text">Total Pembayaran Debit</span>
+                </h2>
                 <span class="payment__total" id="debitTotal">Rp 0</span>
               </header>
             </section>
@@ -454,7 +416,7 @@
               </table>
             </section>
           </div>
-        </div>
+        </section>
       </main>
 
       <!-- SIDEBAR -->
@@ -462,8 +424,50 @@
         <!-- HEADER -->
         <header class="card header">
           <img src="assets/logo.png" alt="logo tikiku" class="logo" />
-          <h2>Cashless Payment Report</h2>
+          <h1>Cashless Payment Report</h1>
         </header>
+        <div class="card grand">
+          <div class="grand__content">
+            <ul>
+              <li class="grand__item">
+                <span>QRIS</span>
+                <span>0</span>
+              </li>
+              <li class="grand__item">
+                <span>Transfer</span>
+                <span>0</span>
+              </li>
+              <li class="grand__item">
+                <span>Debit</span>
+                <span>0</span>
+              </li>
+            </ul>
+            <footer class="payment__info">
+              <h3 class="section-title">
+                <span class="section-title__icon" aria-hidden="true">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    class="lucide lucide-circle-dollar-sign preview-icon"
+                  >
+                    <circle cx="12" cy="12" r="10" />
+                    <path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8" />
+                    <path d="M12 18V6" />
+                  </svg>
+                </span>
+                <span class="section-title__text">Total Keseluruhan</span>
+              </h3>
+              <span class="grand__total" id="grandTotal">Rp 3.385.000</span>
+            </footer>
+          </div>
+        </div>
         <!-- PDF -->
         <div class="card pdf">
           <header class="card__header">
@@ -495,11 +499,7 @@
               <input type="file" id="pdfInput" accept="application/pdf" />
               <!-- <p id="pdfName">Belum ada file yang dipilih</p> -->
             </div>
-            <button
-              type="button"
-              class="btn btn__icon btn--wide btn--primary"
-              id="mergeButton"
-            >
+            <button type="button" class="btn btn__icon btn--wide btn--primary" id="mergeButton">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="32"
