@@ -21,6 +21,13 @@ const qrisAddBtn = document.querySelector("#qrisAddBtn");
 const trfAddBtn = document.querySelector("#trfAddBtn");
 const debitAddBtn = document.querySelector("#debitAddBtn");
 
+const summaryElements = {
+  qris: document.querySelector("#qrisSum"),
+  trf: document.querySelector("#trfSum"),
+  debit: document.querySelector("#debitSum"),
+  grandTotal: document.querySelector("#grandTotal"),
+};
+
 const pdfInput = document.querySelector("#pdfInput");
 const pdfName = document.querySelector("#pdfName");
 const mergeButton = document.querySelector("#mergeButton");
@@ -214,14 +221,17 @@ function renderActiveTransaction() {
   switch (activeTransaction) {
     case "qris":
       renderTable(activeShipments, "#qrisTableBody", "#qrisTotal");
+      updateSummary();
       break;
 
     case "transfer":
       renderTable(activeShipments, "#trfTableBody", "#trfTotal");
+      updateSummary();
       break;
 
     case "debit":
       renderTable(activeShipments, "#debitTableBody", "#debitTotal");
+      updateSummary();
       break;
   }
 }
@@ -272,6 +282,7 @@ function setupShipmentForm(addButton, receiptInput, shippingInput, shipments, ta
 
     if (success) {
       renderTable(shipments, tableSelector, totalSelector);
+      updateSummary();
     }
   });
 }
@@ -322,7 +333,19 @@ function setupDeleteShipment(tableBody, shipments, tableSelector, totalSelector)
     shipments.splice(index, 1);
 
     renderTable(shipments, tableSelector, totalSelector);
+    updateSummary();
   });
+}
+
+function updateSummary() {
+  const totalQris = calculateTotal(qrisShipments);
+  const totalTrf = calculateTotal(trfShipments);
+  const totalDebit = calculateTotal(debitShipments);
+
+  summaryElements.qris.textContent = formatRupiah(totalQris);
+  summaryElements.trf.textContent = formatRupiah(totalTrf);
+  summaryElements.debit.textContent = formatRupiah(totalDebit);
+  summaryElements.grandTotal.textContent = formatRupiah(totalQris + totalTrf + totalDebit);
 }
 
 function calculateTotal(shipments) {
