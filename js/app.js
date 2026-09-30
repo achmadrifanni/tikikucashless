@@ -40,7 +40,7 @@ const qrisPdfStatus = document.getElementById("qrisPdfStatus");
 const trfPdfStatus = document.getElementById("trfPdfStatus");
 const debitPdfStatus = document.getElementById("debitPdfStatus");
 
-const { rgb } = PDFLib;
+const { rgb, StandardFonts } = PDFLib;
 let pdfUpload = document.querySelector("#pdfUpload");
 
 const tabBtn = document.querySelectorAll(".tab__btn");
@@ -337,15 +337,26 @@ function setupDeleteShipment(tableBody, shipments, tableSelector, totalSelector)
   });
 }
 
-function updateSummary() {
+function getSummary() {
   const totalQris = calculateTotal(qrisShipments);
   const totalTrf = calculateTotal(trfShipments);
   const totalDebit = calculateTotal(debitShipments);
 
-  summaryElements.qris.textContent = formatRupiah(totalQris);
-  summaryElements.trf.textContent = formatRupiah(totalTrf);
-  summaryElements.debit.textContent = formatRupiah(totalDebit);
-  summaryElements.grandTotal.textContent = formatRupiah(totalQris + totalTrf + totalDebit);
+  return {
+    qris: totalQris,
+    trf: totalTrf,
+    debit: totalDebit,
+    grandTotal: totalQris + totalTrf + totalDebit,
+  };
+}
+
+function updateSummary() {
+  const summary = getSummary();
+
+  summaryElements.qris.textContent = formatRupiah(summary.qris);
+  summaryElements.trf.textContent = formatRupiah(summary.trf);
+  summaryElements.debit.textContent = formatRupiah(summary.debit);
+  summaryElements.grandTotal.textContent = formatRupiah(summary.grandTotal);
 }
 
 function calculateTotal(shipments) {
@@ -396,7 +407,7 @@ function downloadPdf(pdfBytes) {
   URL.revokeObjectURL(url);
 }
 
-function drawTable(page, shipments, startX, startY, title) {
+function drawTable(page, shipments, startX, startY, title, fontBold) {
   const rowHeight = 15;
   const noWidth = 10;
   const receiptWidth = 70;
@@ -423,10 +434,9 @@ function drawTable(page, shipments, startX, startY, title) {
   page.drawText(title, {
     x: startX + 20,
     y: currentY - 10,
+    font: fontBold,
     size: 8,
   });
-
-  drawHorizontalLine(page, startX, startX + tableWidth, currentY);
 
   currentY -= rowHeight;
 
@@ -469,11 +479,58 @@ function drawTable(page, shipments, startX, startY, title) {
   page.drawText("Total", {
     x: startX + noWidth + 10,
     y: currentY - 10,
+    font: fontBold,
     size: 8,
   });
 
   page.drawText(formatRupiah(total), {
     x: startX + noWidth + receiptWidth + 10,
+    y: currentY - 10,
+    font: fontBold,
+    size: 8,
+  });
+}
+
+function drawSummary(page, startX, startY, fontBold) {
+  const summary = getSummary();
+
+  const rowHeight = 15;
+
+  const paymentWidth = 80;
+  const costWidth = 55;
+  const totalTableHeight = rowHeight * 5;
+
+  // Total lebar tabel
+  const tableWidth = paymentWidth + costWidth;
+
+  let currentY = startY;
+
+  page.drawRectangle({
+    x: startX,
+    y: currentY - totalTableHeight,
+    width: tableWidth,
+    height: totalTableHeight,
+    color: rgb(1.0, 1.0, 1.0),
+  });
+
+  page.drawText("SUMMARY", {
+    x: startX,
+    y: currentY - 10,
+    font: fontBold,
+    size: 8,
+  });
+
+  currentY -= rowHeight;
+
+  drawHorizontalLine(page, startX, startX + tableWidth, currentY);
+
+  page.drawText(`QRIS`, {
+    x: startX,
+    y: currentY - 10,
+    size: 8,
+  });
+  page.drawText(`${formatRupiah(summary.qris)}`, {
+    x: startX + paymentWidth,
     y: currentY - 10,
     size: 8,
   });
@@ -481,6 +538,49 @@ function drawTable(page, shipments, startX, startY, title) {
   currentY -= rowHeight;
 
   drawHorizontalLine(page, startX, startX + tableWidth, currentY);
+
+  page.drawText(`TRANSFER`, {
+    x: startX,
+    y: currentY - 11,
+    size: 8,
+  });
+  page.drawText(`${formatRupiah(summary.trf)}`, {
+    x: startX + paymentWidth,
+    y: currentY - 11,
+    size: 8,
+  });
+
+  currentY -= rowHeight;
+
+  drawHorizontalLine(page, startX, startX + tableWidth, currentY);
+
+  page.drawText(`DEBIT`, {
+    x: startX,
+    y: currentY - 12,
+    size: 8,
+  });
+  page.drawText(`${formatRupiah(summary.debit)}`, {
+    x: startX + paymentWidth,
+    y: currentY - 12,
+    size: 8,
+  });
+
+  currentY -= rowHeight;
+
+  drawHorizontalLine(page, startX, startX + tableWidth, currentY);
+
+  page.drawText(`GRAND TOTAL`, {
+    x: startX,
+    y: currentY - 13,
+    font: fontBold,
+    size: 9,
+  });
+  page.drawText(`${formatRupiah(summary.grandTotal)}`, {
+    x: startX + paymentWidth,
+    y: currentY - 13,
+    font: fontBold,
+    size: 9,
+  });
 }
 
 function drawHorizontalLine(page, x1, x2, y) {
@@ -514,6 +614,7 @@ function drawVerticalLine(page, x, y1, y2) {
 async function loadPdf() {
   const pdfBytes = await selectedPdf.arrayBuffer();
   const pdfDoc = await PDFLib.PDFDocument.load(pdfBytes);
+  const fontBold = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
   const page = pdfDoc.getPages()[0];
   const { width, height } = page.getSize();
   console.log("Width:", width);
@@ -550,8 +651,13 @@ async function loadPdf() {
   tables.forEach(function (table, index) {
     const x = startX + index * (tableWidth + tableGap);
 
-    drawTable(page, table.shipments, x, startY, table.title);
+    drawTable(page, table.shipments, x, startY, table.title, fontBold);
   });
+
+  // SUMMARY
+  const summaryX = startX + tables.length * (tableWidth + tableGap);
+
+  drawSummary(page, summaryX, startY, fontBold);
 
   const modifiedPdf = await pdfDoc.save();
   downloadPdf(modifiedPdf);
