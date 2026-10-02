@@ -63,11 +63,8 @@ async function handlePdfExtract(file, statusElement, transaction) {
     // Tentukan transaksi yang sedang diproses
     activeTransaction = transaction;
 
-    console.log("================================");
-    console.log("PDF UPLOAD");
     console.log("Transaction:", activeTransaction);
     console.log("File:", file.name);
-    console.log("================================");
 
     statusElement.textContent = "Membaca PDF...";
 
@@ -77,17 +74,11 @@ async function handlePdfExtract(file, statusElement, transaction) {
 
     const text = await extractPdfText(file);
 
-    console.log("Extracted text:");
-    console.log(text);
-
     // =========================
     // PARSE
     // =========================
 
     const pdfShipments = parseShipmentData(text);
-
-    console.log("Parsed shipments:");
-    console.log(pdfShipments);
 
     if (pdfShipments.length === 0) {
       statusElement.textContent = "Tidak ditemukan data No Connote dan Biaya.";
@@ -101,55 +92,12 @@ async function handlePdfExtract(file, statusElement, transaction) {
 
     const importedCount = importShipmentsFromPdf(pdfShipments);
 
-    console.log("Imported:", importedCount);
-
     statusElement.textContent = `${importedCount} transaksi berhasil diimport.`;
   } catch (error) {
     console.error("PDF import error:", error);
 
     statusElement.textContent = "Gagal membaca PDF.";
   }
-}
-
-function getActiveShipment() {
-  switch (activeTransaction) {
-    case "qris":
-      return qrisShipments;
-
-    case "transfer":
-      return trfShipments;
-
-    case "debit":
-      return debitShipments;
-
-    default:
-      return qrisShipments;
-  }
-}
-
-function importShipmentsFromPdf(pdfShipments) {
-  let importedCount = 0;
-
-  const activeShipments = getActiveShipment();
-
-  for (const shipment of pdfShipments) {
-    const alreadyExists = activeShipments.some((item) => item.receipt === shipment.receipt);
-
-    if (alreadyExists) {
-      continue;
-    }
-
-    activeShipments.push({
-      receipt: shipment.receipt,
-      shippingCost: shipment.cost,
-    });
-
-    importedCount++;
-  }
-
-  renderActiveTransaction();
-
-  return importedCount;
 }
 
 async function extractPdfText(file) {
@@ -215,6 +163,31 @@ function parseShipmentData(text) {
   return shipments;
 }
 
+function importShipmentsFromPdf(pdfShipments) {
+  let importedCount = 0;
+
+  const activeShipments = getActiveShipment();
+
+  for (const shipment of pdfShipments) {
+    const alreadyExists = activeShipments.some((item) => item.receipt === shipment.receipt);
+
+    if (alreadyExists) {
+      continue;
+    }
+
+    activeShipments.push({
+      receipt: shipment.receipt,
+      shippingCost: shipment.cost,
+    });
+
+    importedCount++;
+  }
+
+  renderActiveTransaction();
+
+  return importedCount;
+}
+
 function renderActiveTransaction() {
   const activeShipments = getActiveShipment();
 
@@ -233,6 +206,22 @@ function renderActiveTransaction() {
       renderTable(activeShipments, "#debitTableBody", "#debitTotal");
       updateSummary();
       break;
+  }
+}
+
+function getActiveShipment() {
+  switch (activeTransaction) {
+    case "qris":
+      return qrisShipments;
+
+    case "transfer":
+      return trfShipments;
+
+    case "debit":
+      return debitShipments;
+
+    default:
+      return qrisShipments;
   }
 }
 
@@ -617,8 +606,6 @@ async function loadPdf() {
   const fontBold = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
   const page = pdfDoc.getPages()[0];
   const { width, height } = page.getSize();
-  console.log("Width:", width);
-  console.log("Height:", height);
 
   const tables = [];
 
