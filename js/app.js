@@ -1,10 +1,5 @@
-const maxShipment = 18;
-
-let qrisShipments = [];
-let trfShipments = [];
-let debitShipments = [];
-let activeTransaction = "qris";
-let selectedPdf = null;
+import { state, maxShipment } from "./state.js";
+import { formatRupiah } from "./helper.js";
 
 const qrisReceiptInput = document.querySelector("#qrisReceiptInput");
 const qrisShippingInput = document.querySelector("#qrisShippingInput");
@@ -46,14 +41,6 @@ let pdfUpload = document.querySelector("#pdfUpload");
 const tabBtn = document.querySelectorAll(".tab__btn");
 const payment = document.querySelectorAll(".payment__content");
 
-function formatRupiah(value) {
-  return new Intl.NumberFormat("id-ID", {
-    style: "currency",
-    currency: "IDR",
-    minimumFractionDigits: 0,
-  }).format(value);
-}
-
 async function handlePdfExtract(file, statusElement, transaction) {
   if (!file) {
     return;
@@ -61,9 +48,9 @@ async function handlePdfExtract(file, statusElement, transaction) {
 
   try {
     // Tentukan transaksi yang sedang diproses
-    activeTransaction = transaction;
+    state.activeTransaction = transaction;
 
-    console.log("Transaction:", activeTransaction);
+    console.log("Transaction:", state.activeTransaction);
     console.log("File:", file.name);
 
     statusElement.textContent = "Membaca PDF...";
@@ -191,7 +178,7 @@ function importShipmentsFromPdf(pdfShipments) {
 function renderActiveTransaction() {
   const activeShipments = getActiveShipment();
 
-  switch (activeTransaction) {
+  switch (state.activeTransaction) {
     case "qris":
       renderTable(activeShipments, "#qrisTableBody", "#qrisTotal");
       updateSummary();
@@ -210,18 +197,18 @@ function renderActiveTransaction() {
 }
 
 function getActiveShipment() {
-  switch (activeTransaction) {
+  switch (state.activeTransaction) {
     case "qris":
-      return qrisShipments;
+      return state.qrisShipments;
 
     case "transfer":
-      return trfShipments;
+      return state.trfShipments;
 
     case "debit":
-      return debitShipments;
+      return state.debitShipments;
 
     default:
-      return qrisShipments;
+      return state.qrisShipments;
   }
 }
 
@@ -288,9 +275,9 @@ function setupDeleteShipment(tableBody, shipments, tableSelector, totalSelector)
 }
 
 function getSummary() {
-  const totalQris = calculateTotal(qrisShipments);
-  const totalTrf = calculateTotal(trfShipments);
-  const totalDebit = calculateTotal(debitShipments);
+  const totalQris = calculateTotal(state.qrisShipments);
+  const totalTrf = calculateTotal(state.trfShipments);
+  const totalDebit = calculateTotal(state.debitShipments);
 
   return {
     qris: totalQris,
@@ -562,7 +549,7 @@ function drawVerticalLine(page, x, y1, y2) {
 }
 
 async function loadPdf() {
-  const pdfBytes = await selectedPdf.arrayBuffer();
+  const pdfBytes = await state.selectedPdf.arrayBuffer();
   const pdfDoc = await PDFLib.PDFDocument.load(pdfBytes);
   const fontBold = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
   const page = pdfDoc.getPages()[0];
@@ -570,23 +557,23 @@ async function loadPdf() {
 
   const tables = [];
 
-  if (qrisShipments.length > 0) {
+  if (state.qrisShipments.length > 0) {
     tables.push({
-      shipments: qrisShipments,
+      shipments: state.qrisShipments,
       title: "QRIS",
     });
   }
 
-  if (trfShipments.length > 0) {
+  if (state.trfShipments.length > 0) {
     tables.push({
-      shipments: trfShipments,
+      shipments: state.trfShipments,
       title: "TRANSFER",
     });
   }
 
-  if (debitShipments.length > 0) {
+  if (state.debitShipments.length > 0) {
     tables.push({
-      shipments: debitShipments,
+      shipments: state.debitShipments,
       title: "DEBIT",
     });
   }
@@ -623,12 +610,12 @@ tabBtn.forEach((tab, index) => {
     });
     payment[index].classList.add("active");
 
-    activeTransaction = tab.dataset.transaction;
+    state.activeTransaction = tab.dataset.transaction;
   });
 });
 
 qrisPdfExtract.addEventListener("change", function () {
-  activeTransaction = "qris";
+  state.activeTransaction = "qris";
 
   handlePdfExtract(this.files[0], qrisPdfStatus, "qris");
 
@@ -636,7 +623,7 @@ qrisPdfExtract.addEventListener("change", function () {
 });
 
 trfPdfExtract.addEventListener("change", function () {
-  activeTransaction = "transfer";
+  state.activeTransaction = "transfer";
 
   handlePdfExtract(this.files[0], trfPdfStatus, "transfer");
 
@@ -644,7 +631,7 @@ trfPdfExtract.addEventListener("change", function () {
 });
 
 debitPdfExtract.addEventListener("change", function () {
-  activeTransaction = "debit";
+  state.activeTransaction = "debit";
 
   handlePdfExtract(this.files[0], debitPdfStatus, "debit");
 
@@ -652,19 +639,26 @@ debitPdfExtract.addEventListener("change", function () {
 });
 
 // qris
-setupShipmentForm(qrisAddBtn, qrisReceiptInput, qrisShippingInput, qrisShipments, "#qrisTableBody", "#qrisTotal");
+setupShipmentForm(qrisAddBtn, qrisReceiptInput, qrisShippingInput, state.qrisShipments, "#qrisTableBody", "#qrisTotal");
 
-setupDeleteShipment(qrisTableBody, qrisShipments, "#qrisTableBody", "#qrisTotal");
+setupDeleteShipment(qrisTableBody, state.qrisShipments, "#qrisTableBody", "#qrisTotal");
 
 // trf
-setupShipmentForm(trfAddBtn, trfReceiptInput, trfShippingInput, trfShipments, "#trfTableBody", "#trfTotal");
+setupShipmentForm(trfAddBtn, trfReceiptInput, trfShippingInput, state.trfShipments, "#trfTableBody", "#trfTotal");
 
-setupDeleteShipment(trfTableBody, trfShipments, "#trfTableBody", "#trfTotal");
+setupDeleteShipment(trfTableBody, state.trfShipments, "#trfTableBody", "#trfTotal");
 
 // debit
-setupShipmentForm(debitAddBtn, debitReceiptInput, debitShippingInput, debitShipments, "#debitTableBody", "#debitTotal");
+setupShipmentForm(
+  debitAddBtn,
+  debitReceiptInput,
+  debitShippingInput,
+  state.debitShipments,
+  "#debitTableBody",
+  "#debitTotal",
+);
 
-setupDeleteShipment(debitTableBody, debitShipments, "#debitTableBody", "#debitTotal");
+setupDeleteShipment(debitTableBody, state.debitShipments, "#debitTableBody", "#debitTotal");
 
 pdfInput.addEventListener("change", function () {
   const file = pdfInput.files[0];
@@ -678,13 +672,13 @@ pdfInput.addEventListener("change", function () {
     pdfInput.value = "";
     return;
   }
-  selectedPdf = file;
+  state.selectedPdf = file;
   // pdfName.textContent = file.name;
-  console.log(selectedPdf);
+  console.log(state.selectedPdf);
 });
 
 mergeButton.addEventListener("click", function () {
-  if (!selectedPdf) {
+  if (!state.selectedPdf) {
     alert("Silahkan upload file Laporan terlebih dahulu");
     return;
   }
