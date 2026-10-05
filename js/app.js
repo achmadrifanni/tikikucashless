@@ -225,46 +225,6 @@ function getActiveShipment() {
   }
 }
 
-tabBtn.forEach((tab, index) => {
-  tab.addEventListener("click", () => {
-    tabBtn.forEach((tab) => {
-      tab.classList.remove("active");
-    });
-    tab.classList.add("active");
-
-    payment.forEach((content) => {
-      content.classList.remove("active");
-    });
-    payment[index].classList.add("active");
-
-    activeTransaction = tab.dataset.transaction;
-  });
-});
-
-qrisPdfExtract.addEventListener("change", function () {
-  activeTransaction = "qris";
-
-  handlePdfExtract(this.files[0], qrisPdfStatus, "qris");
-
-  this.value = "";
-});
-
-trfPdfExtract.addEventListener("change", function () {
-  activeTransaction = "transfer";
-
-  handlePdfExtract(this.files[0], trfPdfStatus, "transfer");
-
-  this.value = "";
-});
-
-debitPdfExtract.addEventListener("change", function () {
-  activeTransaction = "debit";
-
-  handlePdfExtract(this.files[0], debitPdfStatus, "debit");
-
-  this.value = "";
-});
-
 function setupShipmentForm(addButton, receiptInput, shippingInput, shipments, tableSelector, totalSelector) {
   addButton.addEventListener("click", function () {
     const success = addShipment(receiptInput, shippingInput, shipments);
@@ -291,6 +251,7 @@ function addShipment(receiptInput, shippingInput, shipmentArray) {
 
   if (!shippingCost || shippingCost <= 0) {
     alert("Ongkir harus lebih dari 0");
+    return false;
   }
 
   if (!receipt || !shippingCost) {
@@ -649,6 +610,46 @@ async function loadPdf() {
   const modifiedPdf = await pdfDoc.save();
   downloadPdf(modifiedPdf);
 }
+
+tabBtn.forEach((tab, index) => {
+  tab.addEventListener("click", () => {
+    tabBtn.forEach((tab) => {
+      tab.classList.remove("active");
+    });
+    tab.classList.add("active");
+
+    payment.forEach((content) => {
+      content.classList.remove("active");
+    });
+    payment[index].classList.add("active");
+
+    activeTransaction = tab.dataset.transaction;
+  });
+});
+
+qrisPdfExtract.addEventListener("change", function () {
+  activeTransaction = "qris";
+
+  handlePdfExtract(this.files[0], qrisPdfStatus, "qris");
+
+  this.value = "";
+});
+
+trfPdfExtract.addEventListener("change", function () {
+  activeTransaction = "transfer";
+
+  handlePdfExtract(this.files[0], trfPdfStatus, "transfer");
+
+  this.value = "";
+});
+
+debitPdfExtract.addEventListener("change", function () {
+  activeTransaction = "debit";
+
+  handlePdfExtract(this.files[0], debitPdfStatus, "debit");
+
+  this.value = "";
+});
 
 // qris
 setupShipmentForm(qrisAddBtn, qrisReceiptInput, qrisShippingInput, qrisShipments, "#qrisTableBody", "#qrisTotal");
