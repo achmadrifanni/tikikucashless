@@ -250,6 +250,10 @@ body {
   }
 }
 
+.shipment-import__status {
+  margin-bottom: 0.5rem;
+}
+
 .table {
   width: 100%;
   border-collapse: collapse;
@@ -276,6 +280,34 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.table__empty td {
+  padding: 40px 20px;
+  text-align: center;
+}
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.empty-state__icon {
+  font-size: 28px;
+  margin-bottom: 4px;
+}
+
+.empty-state__title {
+  font-size: 14px;
+}
+
+.empty-state__description {
+  max-width: 280px;
+  color: #777;
+  font-size: 12px;
+  line-height: 1.5;
 }
 
 .grand__item {

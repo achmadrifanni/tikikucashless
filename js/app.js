@@ -63,6 +63,44 @@ function setupDeleteShipment(tableBody, shipments, tableSelector, totalSelector)
   });
 }
 
+function initilizeTables() {
+  renderTable(state.qrisShipments, "#qrisTableBody", "#qrisTotal");
+  renderTable(state.trfShipments, "#trfTableBody", "#trfTotal");
+  renderTable(state.debitShipments, "#debitTableBody", "#debitTotal");
+}
+
+function initializeShipmentForms() {
+  setupShipmentForm(
+    qrisAddBtn,
+    qrisReceiptInput,
+    qrisShippingInput,
+    state.qrisShipments,
+    "#qrisTableBody",
+    "#qrisTotal",
+  );
+  setupShipmentForm(trfAddBtn, trfReceiptInput, trfShippingInput, state.trfShipments, "#trfTableBody", "#trfTotal");
+  setupShipmentForm(
+    debitAddBtn,
+    debitReceiptInput,
+    debitShippingInput,
+    state.debitShipments,
+    "#debitTableBody",
+    "#debitTotal",
+  );
+}
+
+function initializeDeleteShipment() {
+  setupDeleteShipment(qrisTableBody, state.qrisShipments, "#qrisTableBody", "#qrisTotal");
+  setupDeleteShipment(trfTableBody, state.trfShipments, "#trfTableBody", "#trfTotal");
+  setupDeleteShipment(debitTableBody, state.debitShipments, "#debitTableBody", "#debitTotal");
+}
+
+function initializeApp() {
+  initilizeTables();
+  initializeShipmentForms();
+  initializeDeleteShipment();
+}
+
 tabBtn.forEach((tab, index) => {
   tab.addEventListener("click", () => {
     tabBtn.forEach((tab) => {
@@ -103,28 +141,6 @@ debitPdfExtract.addEventListener("change", function () {
   this.value = "";
 });
 
-// qris
-setupShipmentForm(qrisAddBtn, qrisReceiptInput, qrisShippingInput, state.qrisShipments, "#qrisTableBody", "#qrisTotal");
-
-setupDeleteShipment(qrisTableBody, state.qrisShipments, "#qrisTableBody", "#qrisTotal");
-
-// trf
-setupShipmentForm(trfAddBtn, trfReceiptInput, trfShippingInput, state.trfShipments, "#trfTableBody", "#trfTotal");
-
-setupDeleteShipment(trfTableBody, state.trfShipments, "#trfTableBody", "#trfTotal");
-
-// debit
-setupShipmentForm(
-  debitAddBtn,
-  debitReceiptInput,
-  debitShippingInput,
-  state.debitShipments,
-  "#debitTableBody",
-  "#debitTotal",
-);
-
-setupDeleteShipment(debitTableBody, state.debitShipments, "#debitTableBody", "#debitTotal");
-
 pdfInput.addEventListener("change", function () {
   const file = pdfInput.files[0];
 
@@ -149,3 +165,5 @@ mergeButton.addEventListener("click", function () {
   }
   loadPdf();
 });
+
+initializeApp();
