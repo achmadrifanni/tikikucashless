@@ -1,4 +1,5 @@
 import { state } from "./state.js";
+import { saveShipments, loadShipments } from "./storage.js";
 import { addShipment } from "./shipment.js";
 import { renderTable, updateSummary } from "./ui.js";
 import { handlePdfExtract } from "./pdf-import.js";
@@ -8,27 +9,27 @@ const qrisReceiptInput = document.querySelector("#qrisReceiptInput");
 const qrisShippingInput = document.querySelector("#qrisShippingInput");
 
 const trfReceiptInput = document.querySelector("#trfReceiptInput");
-const trfShippingInput = document.querySelector("#trfShippingInput");
+  const trfShippingInput = document.querySelector("#trfShippingInput");
 
-const debitReceiptInput = document.querySelector("#debitReceiptInput");
-const debitShippingInput = document.querySelector("#debitShippingInput");
+  const debitReceiptInput = document.querySelector("#debitReceiptInput");
+  const debitShippingInput = document.querySelector("#debitShippingInput");
 
-const qrisTableBody = document.querySelector("#qrisTableBody");
-const trfTableBody = document.querySelector("#trfTableBody");
-const debitTableBody = document.querySelector("#debitTableBody");
+  const qrisTableBody = document.querySelector("#qrisTableBody");
+  const trfTableBody = document.querySelector("#trfTableBody");
+  const debitTableBody = document.querySelector("#debitTableBody");
 
-const qrisAddBtn = document.querySelector("#qrisAddBtn");
-const trfAddBtn = document.querySelector("#trfAddBtn");
-const debitAddBtn = document.querySelector("#debitAddBtn");
+  const qrisAddBtn = document.querySelector("#qrisAddBtn");
+  const trfAddBtn = document.querySelector("#trfAddBtn");
+  const debitAddBtn = document.querySelector("#debitAddBtn");
 
-const pdfInput = document.querySelector("#pdfInput");
-const mergeButton = document.querySelector("#mergeButton");
+  const pdfInput = document.querySelector("#pdfInput");
+  const mergeButton = document.querySelector("#mergeButton");
 
-const qrisPdfExtract = document.querySelector("#qrisPdfExtract");
-const trfPdfExtract = document.querySelector("#trfPdfExtract");
-const debitPdfExtract = document.querySelector("#debitPdfExtract");
+  const qrisPdfExtract = document.querySelector("#qrisPdfExtract");
+  const trfPdfExtract = document.querySelector("#trfPdfExtract");
+  const debitPdfExtract = document.querySelector("#debitPdfExtract");
 
-const qrisPdfStatus = document.getElementById("qrisPdfStatus");
+  const qrisPdfStatus = document.getElementById("qrisPdfStatus");
 const trfPdfStatus = document.getElementById("trfPdfStatus");
 const debitPdfStatus = document.getElementById("debitPdfStatus");
 
@@ -59,6 +60,7 @@ function setupDeleteShipment(tableBody, shipments, tableSelector, totalSelector)
     shipments.splice(index, 1);
 
     renderTable(shipments, tableSelector, totalSelector);
+
     updateSummary();
   });
 }
