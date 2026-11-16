@@ -1,8 +1,10 @@
 import { state } from "./state.js";
-import { addShipment } from "./shipment.js";
+import { addShipment, saveCurrentSession } from "./shipment.js";
 import { renderTable, updateSummary } from "./ui.js";
 import { handlePdfExtract } from "./pdf-import.js";
 import { loadPdf } from "./pdf-export.js";
+import { loadBackup, clearBackup } from "./backup.js";
+import { showRestorePrompt } from "./restore-ui.js";
 
 const qrisReceiptInput = document.querySelector("#qrisReceiptInput");
 const qrisShippingInput = document.querySelector("#qrisShippingInput");
@@ -58,6 +60,8 @@ function setupDeleteShipment(tableBody, shipments, tableSelector, totalSelector)
 
     shipments.splice(index, 1);
 
+    saveCurrentSession();
+
     renderTable(shipments, tableSelector, totalSelector);
     updateSummary();
   });
@@ -95,10 +99,67 @@ function initializeDeleteShipment() {
   setupDeleteShipment(debitTableBody, state.debitShipments, "#debitTableBody", "#debitTotal");
 }
 
-function initializeApp() {
+async function initializeSessionRecovery() {
+  try {
+    const backup = await loadBackup();
+
+    // Tidak ada backup sebelumnya
+    if (!backup) {
+      return;
+    }
+
+    // Pastikan ketiga data tersedia sebagai array
+    const qris = Array.isArray(backup.qrisShipments) ? backup.qrisShipments : [];
+
+    const transfer = Array.isArray(backup.trfShipments) ? backup.trfShipments : [];
+
+    const debit = Array.isArray(backup.debitShipments) ? backup.debitShipments : [];
+
+    // Periksa apakah backup memiliki setidaknya satu data
+    const hasData = qris.length > 0 || transfer.length > 0 || debit.length > 0;
+
+    if (!hasData) {
+      await clearBackup();
+      return;
+    }
+
+    // Tampilkan pilihan pemulihan
+    showRestorePrompt({
+      onRestore: async () => {
+        state.qrisShipments = qris;
+        state.trfShipments = transfer;
+        state.debitShipments = debit;
+
+        initilizeTables();
+        updateSummary();
+
+        console.log("Data sebelumnya berhasil dipulihkan.");
+      },
+
+      onStartNew: async () => {
+        await clearBackup();
+
+        state.qrisShipments = [];
+        state.trfShipments = [];
+        state.debitShipments = [];
+
+        initilizeTables();
+        updateSummary();
+
+        console.log("Memulai sesi baru.");
+      },
+    });
+  } catch (error) {
+    console.error("Gagal memeriksa backup:", error);
+  }
+}
+
+async function initializeApp() {
   initilizeTables();
   initializeShipmentForms();
   initializeDeleteShipment();
+
+  await initializeSessionRecovery();
 }
 
 tabBtn.forEach((tab, index) => {

@@ -1,5 +1,23 @@
 import { state, maxShipment } from "./state.js";
 import { renderActiveTransaction } from "./ui.js";
+import { saveBackup, clearBackup } from "./backup.js";
+
+// Menyimpan atau menghapus backup berdasarkan kondisi data
+export async function saveCurrentSession() {
+  const hasData = state.qrisShipments.length > 0 || state.trfShipments.length > 0 || state.debitShipments.length > 0;
+
+  try {
+    if (hasData) {
+      await saveBackup(state);
+      console.log("Backup berhasil disimpan.");
+    } else {
+      await clearBackup();
+      console.log("Backup dihapus karena seluruh data kosong.");
+    }
+  } catch (error) {
+    console.error("Gagal menyimpan backup:", error);
+  }
+}
 
 export function getActiveShipment() {
   switch (state.activeTransaction) {
@@ -37,6 +55,10 @@ export function importShipmentsFromPdf(pdfShipments) {
     importedCount++;
   }
 
+  if (importedCount > 0) {
+    saveCurrentSession();
+  }
+
   renderActiveTransaction();
 
   return importedCount;
@@ -70,6 +92,8 @@ export function addShipment(receiptInput, shippingInput, shipmentArray) {
     receipt,
     shippingCost,
   });
+
+  saveCurrentSession();
 
   receiptInput.value = "";
   shippingInput.value = "";
