@@ -126,9 +126,12 @@ async function initializeSessionRecovery() {
     // Tampilkan pilihan pemulihan
     showRestorePrompt({
       onRestore: async () => {
-        state.qrisShipments = qris;
-        state.trfShipments = transfer;
-        state.debitShipments = debit;
+        // Isi array yang sudah ada tanpa mengganti referensinya
+        state.qrisShipments.splice(0, state.qrisShipments.length, ...qris);
+
+        state.trfShipments.splice(0, state.trfShipments.length, ...transfer);
+
+        state.debitShipments.splice(0, state.debitShipments.length, ...debit);
 
         initilizeTables();
         updateSummary();
@@ -139,9 +142,10 @@ async function initializeSessionRecovery() {
       onStartNew: async () => {
         await clearBackup();
 
-        state.qrisShipments = [];
-        state.trfShipments = [];
-        state.debitShipments = [];
+        // Kosongkan array tanpa mengganti referensinya
+        state.qrisShipments.length = 0;
+        state.trfShipments.length = 0;
+        state.debitShipments.length = 0;
 
         initilizeTables();
         updateSummary();
